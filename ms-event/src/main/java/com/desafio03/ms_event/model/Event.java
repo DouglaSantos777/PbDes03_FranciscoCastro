@@ -1,4 +1,4 @@
-package com.desafio03.ms_event.entities;
+package com.desafio03.ms_event.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class EventEntity {
+public class Event {
     @Id
     private String id;
     private String eventName;
