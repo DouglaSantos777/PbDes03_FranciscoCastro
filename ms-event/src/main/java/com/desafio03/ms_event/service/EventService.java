@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class EventService {
     private final EventRepository eventRepository;
 
-    public void createProduct(EventRequestDto eventRequestDto) {
+    public void createEvent(EventRequestDto eventRequestDto) {
         Event event = Event.builder()
                 .eventName(eventRequestDto.eventName())
                 .dateTime(eventRequestDto.dateTime())
