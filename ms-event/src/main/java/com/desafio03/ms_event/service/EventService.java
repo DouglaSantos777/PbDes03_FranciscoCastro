@@ -35,7 +35,7 @@ public class EventService {
             if (adress != null) {
                 event.setLogradouro(adress.logradouro());
                 event.setBairro(adress.bairro());
-                event.setCidade(adress.cidade());
+                event.setCidade(adress.localidade());
                 event.setUf(adress.uf());
             }
         }

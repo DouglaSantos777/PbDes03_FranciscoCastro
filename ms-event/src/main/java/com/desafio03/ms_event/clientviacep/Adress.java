@@ -4,7 +4,7 @@ public record Adress(
         String cep,
         String logradouro,
         String bairro,
-        String cidade,
+        String localidade,
         String uf
 ) {
 }
