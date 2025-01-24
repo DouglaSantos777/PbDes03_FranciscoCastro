@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +36,18 @@ public class EventService {
                .map(EventMapper::toResponseDto)
                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
 
+    }
+
+    public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto){
+    Event event = eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+
+        event.setEventName(eventRequestDto.eventName());
+        event.setDateTime(eventRequestDto.dateTime());
+        event.setCep(eventRequestDto.cep());
+
+        eventRepository.save(event);
+        log.info("Event updated successfully: {}", id);
+
+        return EventMapper.toResponseDto(event);
     }
 }

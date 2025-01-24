@@ -34,5 +34,10 @@ public class EventController {
         return eventService.getEvent(id);
     }
 
+    @PutMapping("update-event/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto){
+        return eventService.updateEvent(id, eventRequestDto);
+    }
 
 }
