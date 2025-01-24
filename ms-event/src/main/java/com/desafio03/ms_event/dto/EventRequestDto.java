@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
-public record EventRequest(
+public record EventRequestDto(
         @NotNull(message = "Event Name is required")
         String eventName,
         @NotNull(message = "Date Time is required")
