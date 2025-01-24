@@ -24,22 +24,22 @@ public class EventService {
         return EventMapper.toResponseDto(event);
     }
 
-    public List<EventResponseDto> getAllEvents(){
+    public List<EventResponseDto> getAllEvents() {
         return eventRepository.findAll()
                 .stream()
                 .map(EventMapper::toResponseDto)
                 .toList();
     }
 
-    public EventResponseDto getEvent(String id){
-       return eventRepository.findById(id)
-               .map(EventMapper::toResponseDto)
-               .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+    public EventResponseDto getEvent(String id) {
+        return eventRepository.findById(id)
+                .map(EventMapper::toResponseDto)
+                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
 
     }
 
-    public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto){
-    Event event = eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+    public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto) {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
 
         event.setEventName(eventRequestDto.eventName());
         event.setDateTime(eventRequestDto.dateTime());
@@ -49,5 +49,12 @@ public class EventService {
         log.info("Event updated successfully: {}", id);
 
         return EventMapper.toResponseDto(event);
+    }
+
+    public void deleteEvent(String id) {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+
+        eventRepository.deleteById(event.getId());
+        log.info("Event deleted successfully: {}", id);
     }
 }

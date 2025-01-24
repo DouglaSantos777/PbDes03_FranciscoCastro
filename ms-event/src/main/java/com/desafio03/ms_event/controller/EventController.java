@@ -40,4 +40,10 @@ public class EventController {
         return eventService.updateEvent(id, eventRequestDto);
     }
 
+    @DeleteMapping("delete-event/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEvent(@PathVariable String id){
+        eventService.deleteEvent(id);
+    }
+
 }
