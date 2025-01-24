@@ -2,7 +2,7 @@ package com.desafio03.ms_event.dto;
 
 import java.time.LocalDateTime;
 
-public record EventResponse(
+public record EventResponseDto(
          String id,
          String eventName,
          LocalDateTime dateTime,
