@@ -7,9 +7,9 @@ public record EventResponseDto(
          String eventName,
          LocalDateTime dateTime,
          String cep,
-         String publicPlace,
-         String district,
-         String city,
+         String logradouro,
+         String bairro,
+         String cidade,
          String uf
 ) {
 }

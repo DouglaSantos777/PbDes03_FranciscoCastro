@@ -18,9 +18,9 @@ public class Event {
     private String eventName;
     private LocalDateTime dateTime;
     private String cep;
-    private String publicPlace;
-    private String district;
-    private String city;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
     private String uf;
 
 }

@@ -20,9 +20,9 @@ public class EventMapper {
                 event.getEventName(),
                 event.getDateTime(),
                 event.getCep(),
-                event.getPublicPlace(),
-                event.getDistrict(),
-                event.getCity(),
+                event.getLogradouro(),
+                event.getBairro(),
+                event.getCidade(),
                 event.getUf()
         );
     }
