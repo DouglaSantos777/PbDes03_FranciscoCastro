@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("br/com/compass/eventmanagement/v1")
 @RequiredArgsConstructor
@@ -18,5 +20,11 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventResponseDto createEvent(@RequestBody EventRequestDto eventRequestDto) {
      return eventService.createEvent(eventRequestDto);
+    }
+
+    @GetMapping("get-all-events")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventResponseDto> getAllEvents() {
+        return eventService.getAllEvents();
     }
 }
