@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,11 @@ public class EventService {
                 .stream()
                 .map(event -> new EventResponseDto(event.getId(), event.getEventName(), event.getDateTime(), event.getCep(), event.getPublicPlace(), event.getDistrict(), event.getCity(), event.getUf()))
                 .toList();
+    }
+
+    public EventResponseDto getEvent(String id){
+       Optional<Event> event = eventRepository.findById(id);
+       return new EventResponseDto(event.get().getId(), event.get().getEventName(), event.get().getDateTime(), event.get().getCep(), event.get().getPublicPlace(), event.get().getDistrict(), event.get().getCity(), event.get().getUf());
     }
 
 }
