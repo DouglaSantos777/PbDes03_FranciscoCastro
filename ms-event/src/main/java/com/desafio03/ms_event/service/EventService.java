@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -24,6 +25,12 @@ public class EventService {
         return EventMapper.toResponseDto(event);
     }
 
+    public EventResponseDto getEvent(String id) {
+        return eventRepository.findById(id)
+                .map(EventMapper::toResponseDto)
+                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+    }
+
     public List<EventResponseDto> getAllEvents() {
         return eventRepository.findAll()
                 .stream()
@@ -31,11 +38,12 @@ public class EventService {
                 .toList();
     }
 
-    public EventResponseDto getEvent(String id) {
-        return eventRepository.findById(id)
+    public List<EventResponseDto> getAllEventsSorted() {
+        return eventRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Event::getEventName))
                 .map(EventMapper::toResponseDto)
-                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
-
+                .toList();
     }
 
     public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto) {

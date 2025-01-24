@@ -22,16 +22,22 @@ public class EventController {
      return eventService.createEvent(eventRequestDto);
     }
 
+    @GetMapping("get-event/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventResponseDto getEvent(@PathVariable String id) {
+        return eventService.getEvent(id);
+    }
+
     @GetMapping("get-all-events")
     @ResponseStatus(HttpStatus.OK)
     public List<EventResponseDto> getAllEvents() {
         return eventService.getAllEvents();
     }
 
-    @GetMapping("get-event/{id}")
+    @GetMapping("get-all-events/sorted")
     @ResponseStatus(HttpStatus.OK)
-    public EventResponseDto getEvent(@PathVariable String id) {
-        return eventService.getEvent(id);
+    public List<EventResponseDto> getAllEventsSorted() {
+        return eventService.getAllEventsSorted();
     }
 
     @PutMapping("update-event/{id}")
