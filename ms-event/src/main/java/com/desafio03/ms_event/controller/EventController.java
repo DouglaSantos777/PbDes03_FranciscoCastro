@@ -29,25 +29,34 @@ public class EventController {
     @GetMapping("get-event/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventResponseDto getEvent(@PathVariable String id) {
-        return eventService.getEvent(id);
+        return EventMapper.toResponseDto(eventService.getEvent(id));
     }
 
     @GetMapping("get-all-events")
     @ResponseStatus(HttpStatus.OK)
     public List<EventResponseDto> getAllEvents() {
-        return eventService.getAllEvents();
+
+        return eventService.getAllEvents()
+                .stream()
+                .map(EventMapper::toResponseDto)
+                .toList();
     }
 
     @GetMapping("get-all-events/sorted")
     @ResponseStatus(HttpStatus.OK)
     public List<EventResponseDto> getAllEventsSorted() {
-        return eventService.getAllEventsSorted();
+
+        return eventService.getAllEventsSorted()
+                .stream()
+                .map(EventMapper::toResponseDto)
+                .toList();
     }
 
     @PutMapping("update-event/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto) {
-        return eventService.updateEvent(id, eventRequestDto);
+        Event event = EventMapper.toEvent(eventRequestDto);
+        return EventMapper.toResponseDto(eventService.updateEvent(id, event));
     }
 
     @DeleteMapping("delete-event/{id}")

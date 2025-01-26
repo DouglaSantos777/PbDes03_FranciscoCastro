@@ -45,13 +45,43 @@ public class EventService {
         return event;
     }
 
-    /*
     public Event getEvent(String id) {
-
         return eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
     }
 
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
+    }
+
+    public List<Event> getAllEventsSorted() {
+        return eventRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Event::getEventName))
+                .toList();
+    }
+
+    public Event updateEvent(String id, Event event) {
+        Event updateEvent = getEvent(id);
+
+        updateEvent.setEventName(event.getEventName());
+        updateEvent.setDateTime(event.getDateTime());
+        updateEvent.setCep(event.getCep());
+
+        createEvent(event);
+        log.info("Event updated successfully: {}", id);
+
+        return updateEvent;
+    }
+
+    public void deleteEvent(String id) {
+        Event event = getEvent(id);
+
+        eventRepository.deleteById(event.getId());
+        log.info("Event deleted successfully: {}", id);
+    }
+
+    /*
     public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
         Event event = EventMapper.toEvent(eventRequestDto);
         boolean eventAlreadyExists = eventRepository.existsByEventName(event);
@@ -75,7 +105,7 @@ public class EventService {
         log.info("Event created successfully");
         return EventMapper.toResponseDto(event);
     }
-*/
+
 
     public EventResponseDto getEvent(String id) {
 
@@ -84,12 +114,14 @@ public class EventService {
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
     }
 
+
     public List<EventResponseDto> getAllEvents() {
         return eventRepository.findAll()
                 .stream()
                 .map(EventMapper::toResponseDto)
                 .toList();
     }
+
 
     public List<EventResponseDto> getAllEventsSorted() {
         return eventRepository.findAll()
@@ -112,10 +144,12 @@ public class EventService {
         return EventMapper.toResponseDto(event);
     }
 
+
     public void deleteEvent(String id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
 
         eventRepository.deleteById(event.getId());
         log.info("Event deleted successfully: {}", id);
     }
+     */
 }
