@@ -2,6 +2,8 @@ package com.desafio03.ms_event.controller;
 
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
+import com.desafio03.ms_event.dto.mapper.EventMapper;
+import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,9 @@ public class EventController {
     @PostMapping("create-event")
     @ResponseStatus(HttpStatus.CREATED)
     public EventResponseDto createEvent(@RequestBody EventRequestDto eventRequestDto) {
-     return eventService.createEvent(eventRequestDto);
+        Event event = EventMapper.toEvent(eventRequestDto);
+
+        return EventMapper.toResponseDto(eventService.createEvent(event));
     }
 
     @GetMapping("get-event/{id}")
@@ -42,13 +46,13 @@ public class EventController {
 
     @PutMapping("update-event/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto){
+    public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto) {
         return eventService.updateEvent(id, eventRequestDto);
     }
 
     @DeleteMapping("delete-event/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvent(@PathVariable String id){
+    public void deleteEvent(@PathVariable String id) {
         eventService.deleteEvent(id);
     }
 

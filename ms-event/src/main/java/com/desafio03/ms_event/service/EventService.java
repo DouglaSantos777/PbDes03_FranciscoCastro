@@ -22,6 +22,36 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ViacepClient viacepClient;
 
+    public Event createEvent(Event event) {
+        boolean eventAlreadyExists = eventRepository.existsByEventName(event);
+
+        if (eventAlreadyExists) {
+            throw new EventNameAlreadyExistsException("Event Already exists with name " + event.getEventName() + " .");
+        }
+
+        if (event.getCep() != null) {
+            var adress = viacepClient.getAdress(event.getCep());
+
+            if (adress != null) {
+                event.setLogradouro(adress.logradouro());
+                event.setBairro(adress.bairro());
+                event.setCidade(adress.localidade());
+                event.setUf(adress.uf());
+            }
+        }
+
+        eventRepository.save(event);
+        log.info("Event created successfully");
+        return event;
+    }
+
+    /*
+    public Event getEvent(String id) {
+
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
+    }
+
     public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
         Event event = EventMapper.toEvent(eventRequestDto);
         boolean eventAlreadyExists = eventRepository.existsByEventName(event);
@@ -45,6 +75,7 @@ public class EventService {
         log.info("Event created successfully");
         return EventMapper.toResponseDto(event);
     }
+*/
 
     public EventResponseDto getEvent(String id) {
 
