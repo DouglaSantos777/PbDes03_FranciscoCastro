@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("br/com/compass/eventmanagement/v1")
+@RequestMapping("api/v1/events")
 @RequiredArgsConstructor
 public class EventController {
 
