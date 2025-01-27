@@ -2,11 +2,10 @@ package com.desafio03.ms_event.controller;
 
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
-import com.desafio03.ms_event.dto.mapper.EventMapper;
-import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,42 +20,31 @@ public class EventController {
     @PostMapping("create-event")
     @ResponseStatus(HttpStatus.CREATED)
     public EventResponseDto createEvent(@RequestBody EventRequestDto eventRequestDto) {
-        Event event = EventMapper.toEvent(eventRequestDto);
 
-        return EventMapper.toResponseDto(eventService.createEvent(event));
+        return eventService.createEvent(eventRequestDto);
     }
 
     @GetMapping("get-event/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventResponseDto getEvent(@PathVariable String id) {
-        return EventMapper.toResponseDto(eventService.getEvent(id));
+    public ResponseEntity<EventResponseDto> getEvent(@PathVariable String id) {
+        return ResponseEntity.ok(eventService.getEvent(id));
     }
 
     @GetMapping("get-all-events")
     @ResponseStatus(HttpStatus.OK)
     public List<EventResponseDto> getAllEvents() {
-
-        return eventService.getAllEvents()
-                .stream()
-                .map(EventMapper::toResponseDto)
-                .toList();
+        return eventService.getAllEvents();
     }
 
     @GetMapping("get-all-events/sorted")
     @ResponseStatus(HttpStatus.OK)
     public List<EventResponseDto> getAllEventsSorted() {
-
-        return eventService.getAllEventsSorted()
-                .stream()
-                .map(EventMapper::toResponseDto)
-                .toList();
+        return eventService.getAllEventsSorted();
     }
 
     @PutMapping("update-event/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto) {
-        Event event = EventMapper.toEvent(eventRequestDto);
-        return EventMapper.toResponseDto(eventService.updateEvent(id, event));
+        return eventService.updateEvent(id, eventRequestDto);
     }
 
     @DeleteMapping("delete-event/{id}")
