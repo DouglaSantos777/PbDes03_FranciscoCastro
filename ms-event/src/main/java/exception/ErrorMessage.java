@@ -22,13 +22,12 @@ public class ErrorMessage {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant timestamp;
-    private String path;
-    private String method;
     private int status;
     private String statusText;
-    private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
+    private String message;
+    private String path;
 
     public ErrorMessage() {
     }
@@ -41,31 +40,19 @@ public class ErrorMessage {
         this.path = request.getRequestURI();
     }
 
-
-   /* public ErrorMessage(HttpServletRequest request, HttpStatus status, String message) {
-        this.path = request.getRequestURI();
-        this.method = request.getMethod();
+    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message, BindingResult result) {
+        this.timestamp = Instant.now();
         this.status = status.value();
-        this.statusText = status.getReasonPhrase();
+        this.statusText  =  status.getReasonPhrase();
         this.message = message;
-    }
-    */
-
-    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message, BindingResult result, MessageSource messageSource) {
         this.path = request.getRequestURI();
-        this.method = request.getMethod();
-        this.status = status.value();
-        this.statusText = status.getReasonPhrase();
-        this.message = message;
-        addErrors(result, messageSource, request.getLocale());
+        addErrors(result);
     }
 
-    private void addErrors(BindingResult result, MessageSource messageSource, Locale locale) {
+    private void addErrors(BindingResult result) {
         this.errors = new HashMap<>();
         for (FieldError fieldError : result.getFieldErrors()) {
-            String code = Objects.requireNonNull(fieldError.getCodes())[0];
-            String message = messageSource.getMessage(code, fieldError.getArguments(), locale);
-            this.errors.put(fieldError.getField(), message);
+            this.errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
     }
 }
