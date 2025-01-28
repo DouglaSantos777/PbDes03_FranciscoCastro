@@ -1,9 +1,7 @@
 package exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +15,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorMessage> entityNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
-        log.error("Api Error - EntityNotFoundException: ", ex);
+    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
+        log.error("Resource not found - ", ex);
+        ErrorMessage errorMessage = new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
+                .body(errorMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
                                                                         HttpServletRequest request,
                                                                         BindingResult result) {
-        log.error("Api Error - ", ex);
+        log.error("Validation error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .contentType(MediaType.APPLICATION_JSON)

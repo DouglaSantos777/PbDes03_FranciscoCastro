@@ -5,16 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.ToString;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 @Getter
 @ToString
@@ -32,10 +29,10 @@ public class ErrorMessage {
     public ErrorMessage() {
     }
 
-    public ErrorMessage(HttpServletRequest request, HttpStatus status,  String message) {
+    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message) {
         this.timestamp = Instant.now();
         this.status = status.value();
-        this.statusText  =  status.getReasonPhrase();
+        this.statusText = status.getReasonPhrase();
         this.message = message;
         this.path = request.getRequestURI();
     }
@@ -43,7 +40,7 @@ public class ErrorMessage {
     public ErrorMessage(HttpServletRequest request, HttpStatus status, String message, BindingResult result) {
         this.timestamp = Instant.now();
         this.status = status.value();
-        this.statusText  =  status.getReasonPhrase();
+        this.statusText = status.getReasonPhrase();
         this.message = message;
         this.path = request.getRequestURI();
         addErrors(result);
