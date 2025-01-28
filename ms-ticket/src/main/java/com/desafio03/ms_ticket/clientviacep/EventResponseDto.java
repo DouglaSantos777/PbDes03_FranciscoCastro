@@ -1,4 +1,4 @@
-package com.desafio03.ms_ticket.model.dto;
+package com.desafio03.ms_ticket.clientviacep;
 
 import java.time.LocalDateTime;
 
