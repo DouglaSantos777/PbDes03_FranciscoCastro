@@ -8,6 +8,7 @@ public record TicketRequestDto(
     String cpf,
     String customerMail,
     String eventId,
+    String eventName,
     String BRLtotalAmount,
     String USDtotalAmount
 ){

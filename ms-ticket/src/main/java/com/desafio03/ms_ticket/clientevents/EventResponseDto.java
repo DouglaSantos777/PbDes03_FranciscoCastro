@@ -1,11 +1,11 @@
-package com.desafio03.ms_ticket.clientviacep;
+package com.desafio03.ms_ticket.clientevents;
 
 import java.time.LocalDateTime;
 
 public record EventResponseDto(
-        String id,
+        String eventId,
         String eventName,
-        LocalDateTime dateTime,
+        LocalDateTime eventDateTime,
         String cep,
         String logradouro,
         String bairro,

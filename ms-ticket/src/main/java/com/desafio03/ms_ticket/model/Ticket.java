@@ -1,6 +1,6 @@
 package com.desafio03.ms_ticket.model;
 
-import com.desafio03.ms_ticket.clientviacep.EventResponseDto;
+import com.desafio03.ms_ticket.clientevents.EventResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,8 +16,8 @@ public class Ticket {
 
     @Id
     private String ticketId;
-    private String cpf;
     private String customerName;
+    private String cpf;
     private String customerMail;
     private EventResponseDto event;
     private String BRLtotalAmount;
