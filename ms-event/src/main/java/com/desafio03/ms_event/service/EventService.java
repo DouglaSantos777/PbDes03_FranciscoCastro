@@ -46,11 +46,10 @@ public class EventService {
         return EventMapper.toResponseDto(event);
     }
 
-
     public EventResponseDto getEvent(String id) {
-        return eventRepository.findById(id)
-                .map(EventMapper::toResponseDto)
-                .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
+            return eventRepository.findById(id)
+                    .map(EventMapper::toResponseDto)
+                    .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
     }
 
     public List<EventResponseDto> getAllEvents() {
