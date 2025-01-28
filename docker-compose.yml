@@ -13,7 +13,49 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbit:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - ms_network
+
+  ms-event:
+    build:
+      context: ./ms-event
+      dockerfile: Dockerfile
+    container_name: ms-event
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb+srv://admin:admin@cluster0.wokh8.mongodb.net/db_event?retryWrites=true&w=majority&appName=Cluster0
+    depends_on:
+      - rabbitmq
+    networks:
+      - ms_network
+
+  ms-ticket:
+    build:
+      context: ./ms-ticket
+      dockerfile: Dockerfile
+    container_name: ms-ticket
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb+srv://admin:admin@cluster0.wokh8.mongodb.net/db_ticket?retryWrites=true&w=majority&appName=Cluster0
+    depends_on:
+      - rabbitmq
+    networks:
+      - ms_network
 
 volumes:
   rabbit:
+
+networks:
+  ms_network:
+    driver: bridge
 
