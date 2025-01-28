@@ -7,7 +7,6 @@ import com.desafio03.ms_event.dto.mapper.EventMapper;
 import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.repositories.EventRepository;
 import exception.EntityNotFoundException;
-import exception.EventNameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +23,6 @@ public class EventService {
 
     public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
         Event event = EventMapper.toEvent(eventRequestDto);
-        boolean eventAlreadyExists = eventRepository.existsByEventName(event.getEventName());
-
-        if(eventAlreadyExists){
-            throw new EventNameAlreadyExistsException("Event Already exists with name " + event.getEventName() + " .");
-        }
 
         if (event.getCep() != null){
             var adress = viacepClient.getAdress(event.getCep());

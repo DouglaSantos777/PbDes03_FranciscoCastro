@@ -9,7 +9,6 @@ import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.repositories.EventRepository;
 import com.desafio03.ms_event.service.EventService;
 import exception.EntityNotFoundException;
-import exception.EventNameAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,17 +66,6 @@ public class EventServiceTest {
 
         verify(viacepClient).getAdress(validEvent.getCep());
         verify(eventRepository).save(validEvent);
-    }
-
-    @Test
-    public void createEvent_WhenEventNameAlreadyExists_ThrowsEventNameAlreadyExistsException() {
-        when(eventRepository.existsByEventName(validEvent.getEventName())).thenReturn(true);
-
-        assertThatThrownBy(() -> eventService.createEvent(validEventRequestDto))
-                .isInstanceOf(EventNameAlreadyExistsException.class)
-                .hasMessage("Event Already exists with name Valid Event .");
-
-        verify(eventRepository, never()).save(validEvent);
     }
 
     @Test

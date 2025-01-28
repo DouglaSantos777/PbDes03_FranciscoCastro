@@ -27,15 +27,4 @@ class EventRepositoryTest {
                 .build();
     }
 
-    @Test
-    void existsByEventName() {
-        eventRepository.save(event);
-
-        boolean exists = eventRepository.existsByEventName("Test Event");
-
-        assertTrue(exists);
-
-        boolean notExists = eventRepository.existsByEventName("Non-Existent Event");
-        assertFalse(notExists);
-    }
 }
