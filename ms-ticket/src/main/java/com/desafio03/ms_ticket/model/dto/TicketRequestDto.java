@@ -1,7 +1,5 @@
 package com.desafio03.ms_ticket.model.dto;
 
-import com.desafio03.ms_ticket.clientevents.EventResponseDto;
-
 public record TicketRequestDto(
     String ticketId,
     String customerName,
@@ -9,8 +7,8 @@ public record TicketRequestDto(
     String customerMail,
     String eventId,
     String eventName,
-    String BRLtotalAmount,
-    String USDtotalAmount
+    String BRLamount,
+    String USDamount
 ){
 }
 

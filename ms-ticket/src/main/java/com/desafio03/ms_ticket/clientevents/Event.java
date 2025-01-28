@@ -1,14 +1,12 @@
 package com.desafio03.ms_ticket.clientevents;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 
-@Builder
-public record EventResponseDto(
-        String eventId,
+public record Event(
+        String id,
         String eventName,
-        LocalDateTime eventDateTime,
+        LocalDateTime dateTime,
+        String cep,
         String logradouro,
         String bairro,
         String cidade,

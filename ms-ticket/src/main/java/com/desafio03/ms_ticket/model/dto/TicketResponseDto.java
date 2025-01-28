@@ -11,6 +11,5 @@ public record TicketResponseDto(
         String BRLtotalAmount,
         String USDtotalAmount,
         String status
-
 ){
 }
