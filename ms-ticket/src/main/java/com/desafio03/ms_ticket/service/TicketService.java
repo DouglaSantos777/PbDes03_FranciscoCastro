@@ -78,4 +78,15 @@ public class TicketService {
         log.info("Ticket canceled successfully: {}", id);
         return TicketMapper.toResponseDto(ticket);
     }
+
+    public TicketResponseDto cancelTicketByCpf(String cpf) {
+        Ticket ticket = ticketRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Ticket not found with cpf: " + cpf));
+
+        ticket.setStatus("cancelado");
+
+        ticketRepository.save(ticket);
+        log.info("Ticket canceled by cpf successfully: {}", cpf);
+        return TicketMapper.toResponseDto(ticket);
+    }
+
 }

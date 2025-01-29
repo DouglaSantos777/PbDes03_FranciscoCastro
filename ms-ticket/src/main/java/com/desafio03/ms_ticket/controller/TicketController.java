@@ -45,4 +45,10 @@ public class TicketController {
     public TicketResponseDto cancelTicketById(@PathVariable String id) {
         return ticketService.cancelTicketById(id);
     }
+
+    @DeleteMapping("cancel-ticket-by-cpf/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    public TicketResponseDto cancelTicketByCpf(@PathVariable String cpf) {
+        return ticketService.cancelTicketByCpf(cpf);
+    }
 }
