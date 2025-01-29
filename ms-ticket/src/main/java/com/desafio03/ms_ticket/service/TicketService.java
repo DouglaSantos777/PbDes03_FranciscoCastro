@@ -44,4 +44,28 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found with ID: " + id));
     }
 
+    public TicketResponseDto getTicketByCPf(String cpf) {
+        return ticketRepository.findByCpf(cpf)
+                .map(TicketMapper::toResponseDto)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with cpf: " + cpf));
+    }
+
+    public TicketResponseDto updateEvent(String id, TicketRequestDto dto) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with Id: " + id));
+
+        Event event = eventClient.getEventById(dto.eventId());
+        log.info("Event received: {}", event);
+
+        if (dto.cpf() != null) ticket.setCpf(dto.cpf());
+        if (dto.customerName() != null) ticket.setCustomerName(dto.customerName());
+        if (dto.customerMail() != null) ticket.setCustomerMail(dto.customerMail());
+        if (event != null) ticket.setEvent(event);
+        if (dto.BRLamount() != null) ticket.setBRLtotalAmount(dto.BRLamount());
+        if (dto.USDamount() != null) ticket.setUSDtotalAmount(dto.USDamount());
+
+        ticketRepository.save(ticket);
+        log.info("Ticket updated successfully: {}", id);
+
+        return TicketMapper.toResponseDto(ticket);
+    }
 }

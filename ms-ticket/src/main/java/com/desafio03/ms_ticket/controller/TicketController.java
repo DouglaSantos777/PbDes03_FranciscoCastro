@@ -28,4 +28,16 @@ public class TicketController {
         return ticketService.getTicketById(id);
     }
 
+    @GetMapping("get-ticket-by-cpf/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    public TicketResponseDto getTicketByCpf(@PathVariable String cpf) {
+        return ticketService.getTicketByCPf(cpf);
+    }
+
+    @PutMapping("update-event/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TicketResponseDto updateEvent(@PathVariable String id, @RequestBody TicketRequestDto dto) {
+        return ticketService.updateEvent(id, dto);
+    }
+
 }
