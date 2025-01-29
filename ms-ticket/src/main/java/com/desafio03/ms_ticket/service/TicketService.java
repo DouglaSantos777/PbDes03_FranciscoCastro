@@ -44,13 +44,13 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found with ID: " + id));
     }
 
-    public TicketResponseDto getTicketByCPf(String cpf) {
+    public TicketResponseDto getTicketByCpf(String cpf) {
         return ticketRepository.findByCpf(cpf)
                 .map(TicketMapper::toResponseDto)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with cpf: " + cpf));
     }
 
-    public TicketResponseDto updateEvent(String id, TicketRequestDto dto) {
+    public TicketResponseDto updateTicket(String id, TicketRequestDto dto) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with Id: " + id));
 
         Event event = eventClient.getEventById(dto.eventId());
@@ -66,6 +66,16 @@ public class TicketService {
         ticketRepository.save(ticket);
         log.info("Ticket updated successfully: {}", id);
 
+        return TicketMapper.toResponseDto(ticket);
+    }
+
+    public TicketResponseDto cancelTicketById(String id) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found with ID: " + id));
+
+        ticket.setStatus("cancelado");
+
+        ticketRepository.save(ticket);
+        log.info("Ticket canceled successfully: {}", id);
         return TicketMapper.toResponseDto(ticket);
     }
 }

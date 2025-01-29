@@ -24,20 +24,25 @@ public class TicketController {
 
     @GetMapping("get-ticket/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TicketResponseDto getTicket(@PathVariable String id) {
+    public TicketResponseDto getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
     }
 
     @GetMapping("get-ticket-by-cpf/{cpf}")
     @ResponseStatus(HttpStatus.OK)
     public TicketResponseDto getTicketByCpf(@PathVariable String cpf) {
-        return ticketService.getTicketByCPf(cpf);
+        return ticketService.getTicketByCpf(cpf);
     }
 
-    @PutMapping("update-event/{id}")
+    @PutMapping("update-ticket/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TicketResponseDto updateEvent(@PathVariable String id, @RequestBody TicketRequestDto dto) {
-        return ticketService.updateEvent(id, dto);
+    public TicketResponseDto updateTicket(@PathVariable String id, @RequestBody TicketRequestDto dto) {
+        return ticketService.updateTicket(id, dto);
     }
 
+    @DeleteMapping("cancel-ticket/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TicketResponseDto cancelTicketById(@PathVariable String id) {
+        return ticketService.cancelTicketById(id);
+    }
 }
