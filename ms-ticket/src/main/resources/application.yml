@@ -1,11 +1,13 @@
 spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
   application:
     name: ms-ticket
   data:
     mongodb:
       uri: mongodb+srv://admin:admin@cluster0.wokh8.mongodb.net/db_ticket?retryWrites=true&w=majority&appName=Cluster0
-  autoconfigure:
-    exclude:
-      - org.springframework.ai.autoconfigure.vectorstore.mongo.MongoDBAtlasVectorStoreAutoConfiguration
 server:
   port: 8081

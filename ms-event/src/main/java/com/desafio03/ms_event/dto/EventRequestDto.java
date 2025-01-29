@@ -2,7 +2,7 @@ package com.desafio03.ms_event.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public record EventRequestDto(
