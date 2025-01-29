@@ -11,29 +11,39 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TicketService {
-    private static final AtomicLong SEQUENCE_GENERATOR = new AtomicLong(1);
 
     private final TicketRepository ticketRepository;
     private final EventClient eventClient;
+    private final IdSequenceService idSequenceService;
 
     public TicketResponseDto createTicket(TicketRequestDto dto) {
-        log.info("Recebendo dados do evento para o ID: {}", dto.eventId());
+        Event event = null;
 
-        Event event = eventClient.getEventById(dto.eventId());
-        log.info("Evento recebido: {}", event);
+        try {
+            event = eventClient.getEventById(dto.eventId());
+        } catch (Exception e) {
+            log.info("Event not found with id: {}", dto.eventId());
+        }
+
+        if (event == null) {
+            event = eventClient.getAllEvents()
+                    .stream()
+                    .filter(e -> e.eventName().equalsIgnoreCase(dto.eventName()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Event not found with id: " + dto.eventId() + " or name: " + dto.eventName()));
+        }
 
         Ticket ticket = TicketMapper.toTicket(dto, event);
-        log.info("Ticket mapeado: {}", ticket);
 
-        ticket.setTicketId(String.valueOf(SEQUENCE_GENERATOR.getAndIncrement()));
+        ticket.setTicketId(String.valueOf(idSequenceService.getNextId()));
+
         ticketRepository.save(ticket);
-        log.info("Ticket salvo no banco com ID: {}", ticket.getTicketId());
 
         return TicketMapper.toResponseDto(ticket);
     }
@@ -59,9 +69,6 @@ public class TicketService {
         if (dto.cpf() != null) ticket.setCpf(dto.cpf());
         if (dto.customerName() != null) ticket.setCustomerName(dto.customerName());
         if (dto.customerMail() != null) ticket.setCustomerMail(dto.customerMail());
-        if (event != null) ticket.setEvent(event);
-        if (dto.BRLamount() != null) ticket.setBRLtotalAmount(dto.BRLamount());
-        if (dto.USDamount() != null) ticket.setUSDtotalAmount(dto.USDamount());
 
         ticketRepository.save(ticket);
         log.info("Ticket updated successfully: {}", id);
@@ -87,6 +94,13 @@ public class TicketService {
         ticketRepository.save(ticket);
         log.info("Ticket canceled by cpf successfully: {}", cpf);
         return TicketMapper.toResponseDto(ticket);
+    }
+
+    public List<TicketResponseDto> checkTicketsByEventsId(String eventId) {
+        return ticketRepository.findByEventId(eventId)
+                .stream()
+                .map(TicketMapper::toResponseDto)
+                .toList();
     }
 
 }

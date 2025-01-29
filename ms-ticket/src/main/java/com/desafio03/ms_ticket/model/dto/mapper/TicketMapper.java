@@ -6,30 +6,39 @@ import com.desafio03.ms_ticket.model.Ticket;
 import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
 import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class TicketMapper {
 
+    private static BigDecimal parseAmount(String amount) {
+        String cleanedAmount = amount.replaceAll("[^\\d,]", "").replace(",", ".");
+        return new BigDecimal(cleanedAmount);
+    }
+
     public static Ticket toTicket(TicketRequestDto dto, Event event) {
+        BigDecimal BRLtotalAmount = parseAmount(dto.BRLamount());
+        BigDecimal USDtotalAmount = parseAmount(dto.USDamount());
+
         return Ticket.builder()
-                .ticketId(dto.ticketId())
                 .customerName(dto.customerName())
                 .cpf(dto.cpf())
                 .customerMail(dto.customerMail())
                 .event(event)
-                .BRLtotalAmount(dto.BRLamount())
-                .USDtotalAmount(dto.USDamount())
+                .BRLtotalAmount(BRLtotalAmount)
+                .USDtotalAmount(USDtotalAmount)
                 .status("concluído")
                 .build();
     }
 
+    private static String formatCurrency(BigDecimal amount, String currencySymbol) {
+        BigDecimal formattedAmount = amount.setScale(2, RoundingMode.HALF_UP);
+        return currencySymbol + formattedAmount.toPlainString();
+    }
+
     public static TicketResponseDto toResponseDto(Ticket ticket) {
-        String formattedBRL = ticket.getBRLtotalAmount().replaceAll("[^\\d,]", "").replace(",", ".");
-        String formattedUSD = ticket.getUSDtotalAmount().replaceAll("[^\\d,]", "").replace(",", ".");
-
-        double brlAmount = Double.parseDouble(formattedBRL);
-        double usdAmount = Double.parseDouble(formattedUSD);
-
-        String formattedBRLWithCurrency = String.format("R$ %.2f", brlAmount);
-        String formattedUSDWithCurrency = String.format("$ %.2f", usdAmount);
+        String formattedBRL = formatCurrency(ticket.getBRLtotalAmount(), "R$ ");
+        String formattedUSD = formatCurrency(ticket.getUSDtotalAmount(), "$ ");
 
         Event event = ticket.getEvent();
 
@@ -49,8 +58,8 @@ public class TicketMapper {
                 ticket.getCustomerName(),
                 ticket.getCustomerMail(),
                 eventResponseDto,
-                formattedBRLWithCurrency,
-                formattedUSDWithCurrency,
+                formattedBRL,
+                formattedUSD,
                 ticket.getStatus()
         );
     }
