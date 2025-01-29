@@ -1,13 +1,12 @@
 package com.desafio03.ms_ticket.controller;
 
+import com.desafio03.ms_ticket.clientevents.HasTicketResponseDto;
 import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
 import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
 import com.desafio03.ms_ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/tickets")
@@ -36,7 +35,7 @@ public class TicketController {
 
     @GetMapping("check-tickets-by-event/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TicketResponseDto> checkTicketsByEventId(@PathVariable String eventId) {
+    public HasTicketResponseDto checkTicketsByEventId(@PathVariable String eventId) {
         return ticketService.checkTicketsByEventsId(eventId);
     }
 

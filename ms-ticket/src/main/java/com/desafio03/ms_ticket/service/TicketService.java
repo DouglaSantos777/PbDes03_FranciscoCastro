@@ -2,6 +2,7 @@ package com.desafio03.ms_ticket.service;
 
 import com.desafio03.ms_ticket.clientevents.Event;
 import com.desafio03.ms_ticket.clientevents.EventClient;
+import com.desafio03.ms_ticket.clientevents.HasTicketResponseDto;
 import com.desafio03.ms_ticket.model.Ticket;
 import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
 import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
@@ -10,8 +11,6 @@ import com.desafio03.ms_ticket.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -93,11 +92,8 @@ public class TicketService {
         return TicketMapper.toResponseDto(ticket);
     }
 
-    public List<TicketResponseDto> checkTicketsByEventsId(String eventId) {
-        return ticketRepository.findByEventId(eventId)
-                .stream()
-                .map(TicketMapper::toResponseDto)
-                .toList();
+    public HasTicketResponseDto checkTicketsByEventsId(String eventId) {
+        boolean hasTickets = ticketRepository.existsByEventId(eventId);
+        return new HasTicketResponseDto(eventId, hasTickets);
     }
-
 }
