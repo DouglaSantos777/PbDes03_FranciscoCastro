@@ -24,6 +24,7 @@ public class TicketService {
 
     public TicketResponseDto createTicket(TicketRequestDto dto) {
         log.info("Recebendo dados do evento para o ID: {}", dto.eventId());
+
         Event event = eventClient.getEventById(dto.eventId());
         log.info("Evento recebido: {}", event);
 
@@ -36,4 +37,11 @@ public class TicketService {
 
         return TicketMapper.toResponseDto(ticket);
     }
+
+    public TicketResponseDto getTicketById(String id) {
+        return ticketRepository.findById(id)
+                .map(TicketMapper::toResponseDto)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with ID: " + id));
+    }
+
 }

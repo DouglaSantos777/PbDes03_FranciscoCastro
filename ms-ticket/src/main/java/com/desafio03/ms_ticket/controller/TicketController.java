@@ -19,8 +19,13 @@ public class TicketController {
     @PostMapping("create-ticket")
     @ResponseStatus(HttpStatus.CREATED)
     public TicketResponseDto createTicket(@RequestBody TicketRequestDto dto) {
-
         return ticketService.createTicket(dto);
+    }
+
+    @GetMapping("get-ticket/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TicketResponseDto getTicket(@PathVariable String id) {
+        return ticketService.getTicketById(id);
     }
 
 }
