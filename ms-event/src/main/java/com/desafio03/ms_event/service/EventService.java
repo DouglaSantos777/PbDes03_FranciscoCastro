@@ -9,11 +9,10 @@ import com.desafio03.ms_event.dto.mapper.EventMapper;
 import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.repository.EventRepository;
 import com.desafio03.ms_event.exception.EventNotFoundException;
+import com.desafio03.ms_event.exception.EventWithTicketsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -86,7 +85,7 @@ public class EventService {
 
         HasTicketResponse eventSituation = msTicketClient.checkTicketsByEvent(id);
         if (eventSituation.hasTickets()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The event can't be deleted because it has tickets.");
+            throw new EventWithTicketsException("The event with ID " + event.getId() + " can't be deleted because it has sold tickets.");
         }
 
         eventRepository.deleteById(event.getId());
