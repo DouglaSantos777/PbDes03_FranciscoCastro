@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class EventConstants {
 
-    public static final LocalDateTime TEST_DATE_TIME = LocalDateTime.of(2025, 1, 30, 10, 30);
+    public static final LocalDateTime TEST_DATE_TIME = LocalDateTime.of(2026, 1, 30, 10, 30);
 
     public static final Event VALID_EVENT = Event.builder()
             .eventName("Valid Event")
