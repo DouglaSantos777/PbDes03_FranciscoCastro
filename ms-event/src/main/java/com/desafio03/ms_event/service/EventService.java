@@ -78,7 +78,7 @@ public class EventService {
 
         HasTicketResponse eventSituation = msTicketClient.checkTicketsByEvent(id);
         if (eventSituation.hasTickets()) {
-            throw new EventWithTicketsException("The event with ID " + event.getId() + " can't be deleted because it has sold tickets.");
+            throw new EventWithTicketsException("The event with ID " + event.getId() + " can't be deleted because it has tickets.");
         }
 
         eventRepository.deleteById(event.getId());

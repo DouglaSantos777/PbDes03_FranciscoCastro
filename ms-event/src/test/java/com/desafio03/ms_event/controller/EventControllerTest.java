@@ -3,6 +3,9 @@ package com.desafio03.ms_event.controller;
 import com.desafio03.ms_event.common.EventConstants;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
+import com.desafio03.ms_event.exception.EventConflictException;
+import com.desafio03.ms_event.exception.EventNotFoundException;
+import com.desafio03.ms_event.exception.EventWithTicketsException;
 import com.desafio03.ms_event.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +75,19 @@ public class EventControllerTest {
     }
 
     @Test
+    public void createEvent_WithConflict_ThrowsEventConflictException() throws Exception {
+        when(eventService.createEvent(any(EventRequestDto.class))).thenThrow(new EventConflictException("Event conflict"));
+
+        mockMvc.perform(post("/api/v1/events/create-event")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validEvent)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Event conflict"));
+
+        verify(eventService).createEvent(any(EventRequestDto.class));
+    }
+
+    @Test
     public void getEvent_ByExistingId_ReturnsEventWithStatus200() throws Exception {
         when(eventService.getEvent(anyString())).thenReturn(validEventResponse);
 
@@ -79,6 +95,18 @@ public class EventControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventName").value(validEventResponse.eventName()));
+
+        verify(eventService).getEvent(anyString());
+    }
+
+    @Test
+    public void getEvent_ByNonExistentId_ThrowsEventNotFoundException() throws Exception {
+        when(eventService.getEvent(anyString())).thenThrow(new EventNotFoundException("Event not found"));
+
+        mockMvc.perform(get("/api/v1/events/get-event/{id}", "invalidId")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Event not found"));
 
         verify(eventService).getEvent(anyString());
     }
@@ -121,7 +149,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void deleteEvent_WhenEventExists_ReturnsNoContentWithStatus204() throws Exception {
+    public void deleteEvent_WithExistingEvent_ReturnsNoContentWithStatus204() throws Exception {
         doNothing().when(eventService).deleteEvent(anyString());
 
         mockMvc.perform(delete("/api/v1/events/delete-event/{id}", "1")
@@ -131,5 +159,16 @@ public class EventControllerTest {
         verify(eventService).deleteEvent(anyString());
     }
 
+    @Test
+    public void deleteEvent_WithTickets_ThrowsEventWithTicketsException() throws Exception {
+        doThrow(new EventWithTicketsException("The event has tickets")).when(eventService).deleteEvent(anyString());
+
+        mockMvc.perform(delete("/api/v1/events/delete-event/{id}", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("The event has tickets"));
+
+        verify(eventService).deleteEvent(anyString());
+    }
 }
 

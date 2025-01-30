@@ -1,6 +1,7 @@
 package com.desafio03.ms_event.service;
 
 import com.desafio03.ms_event.exception.EventConflictException;
+import com.desafio03.ms_event.exception.EventWithTicketsException;
 import com.desafio03.ms_event.feign.msticket.HasTicketResponse;
 import com.desafio03.ms_event.feign.msticket.MsTicketClient;
 import com.desafio03.ms_event.feign.viacep.Address;
@@ -109,22 +110,6 @@ public class EventServiceTest {
         verify(eventRepository, never()).save(any(Event.class));
     }
 
-    /*
-    @Test
-    public void createEvent_WithValidDataInDto_ReturnsCreatedEventDetails() {
-        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(viacepClient.getAddress(validEvent.getCep())).thenReturn(mockAddress);
-
-        EventResponseDto createdEvent = eventService.createEvent(validEventRequestDto);
-
-        assertThat(createdEvent.eventName()).isEqualTo(validEventRequestDto.eventName());
-        assertThat(createdEvent.dateTime()).isEqualTo(validEventRequestDto.dateTime());
-        assertThat(createdEvent.cep()).isEqualTo(validEventRequestDto.cep());
-
-        verify(eventRepository).save(any(Event.class));
-    }
-*/
-
     @Test
     public void getEvent_ByExistingId_ReturnsEvent() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.ofNullable(validEvent));
@@ -146,18 +131,6 @@ public class EventServiceTest {
 
         verify(eventRepository).findById("NonExistentId");
     }
-
-    /*
-    @Test
-    public void getEvent_ByNonExistentId_ReturnsNullEvent() {
-        when(eventRepository.findById("NonExistentId")).thenReturn(Optional.empty());
-
-            EventResponseDto event = eventService.getEvent("NonExistentId");
-            assertThat(event).isNull();
-
-        verify(eventRepository).findById("NonExistentId");
-    }
-*/
 
     @Test
     public void getAllEvents_WithEvents_ReturnsAllEvents() {
@@ -183,27 +156,6 @@ public class EventServiceTest {
         verify(eventRepository).findAll();
     }
 
-    /*
-    @Test
-    public void getAllEventsSorted_WithTwoEvents_ReturnsSortedEvents() {
-        Event anotherEvent = Event.builder()
-                .eventName("Another Event")
-                .dateTime(testDateTime.minusDays(1))
-                .cep("01153-001")
-                .build();
-
-        when(eventRepository.findAll()).thenReturn(List.of(validEvent, anotherEvent));
-
-        List<EventResponseDto> events = eventService.getAllEventsSorted();
-
-        assertThat(events).isNotNull();
-        assertThat(events.size()).isEqualTo(2);
-        assertThat(events.get(0).eventName()).isEqualTo("Another Event");
-        assertThat(events.get(1).eventName()).isEqualTo("Valid Event");
-
-        verify(eventRepository).findAll();
-    }
-*/
     @Test
     public void getAllEventsSorted_WithNoEvents_ReturnsEmptyList() {
         when(eventRepository.findAll()).thenReturn(Collections.emptyList());
@@ -236,28 +188,6 @@ public class EventServiceTest {
         verify(eventRepository).findAll();
     }
 
-    /*
-    @Test
-    public void getAllEventsSorted_WithEventsInDescendingOrder_ReturnsSortedEvents() {
-        Event descendingEvent = Event.builder()
-                .eventName("Zulu Event")
-                .dateTime(testDateTime.minusDays(3))
-                .cep("01153-003")
-                .build();
-
-        when(eventRepository.findAll()).thenReturn(List.of(descendingEvent, validEvent));
-
-        List<EventResponseDto> events = eventService.getAllEventsSorted();
-
-        assertThat(events).isNotNull();
-        assertThat(events.size()).isEqualTo(2);
-        assertThat(events.get(0).eventName()).isEqualTo("Valid Event");
-        assertThat(events.get(1).eventName()).isEqualTo("Zulu Event");
-
-        verify(eventRepository).findAll();
-    }
-    */
-
     @Test
     public void updateEvent_WithValidData_ReturnsUpdatedEvent() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.ofNullable(validEvent));
@@ -274,7 +204,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void updateEvent_WhenEventNotFound_ThrowsEventNotFoundException() {
+    public void updateEvent_WithEventNotFound_ThrowsEventNotFoundException() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.empty());
 
         EventRequestDto updateRequest = new EventRequestDto("Updated Event", testDateTime, "01153-000");
@@ -288,8 +218,8 @@ public class EventServiceTest {
     }
 
     @Test
-    public void deleteEvent_WhenEventExistsAndHasNoTickets_doesNotThrowAnyException() {
-        when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.of(validEvent));
+    public void deleteEvent_WithEventExistsAndHasNoTickets_doesNotThrowAnyException() {
+        when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.of(validEvent));
         when(msTicketClient.checkTicketsByEvent(validEvent.getId())).thenReturn(new HasTicketResponse(validEvent.getId(), false));
 
         eventService.deleteEvent(validEvent.getId());
@@ -299,7 +229,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void deleteEvent_WhenEventNotFound_ThrowsEventNotFoundException() {
+    public void deleteEvent_WithEventNotFound_ThrowsEventNotFoundException() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.empty());
 
         assertThatThrownBy(() -> eventService.deleteEvent(validEvent.getId()))
@@ -310,4 +240,17 @@ public class EventServiceTest {
         verify(eventRepository, never()).deleteById(validEvent.getId());
     }
 
+    @Test
+    public void deleteEvent_WithEventHasTicket_ThrowsEventWithTicketsException() {
+        when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.of(validEvent));
+        when(msTicketClient.checkTicketsByEvent(validEvent.getId()))
+                .thenReturn(new HasTicketResponse(validEvent.getId(), true));
+                
+                assertThatThrownBy(() -> eventService.deleteEvent(validEvent.getId()))
+                .isInstanceOf(EventWithTicketsException.class)
+                .hasMessage("The event with ID " + validEvent.getId() + " can't be deleted because it has tickets.");
+
+        verify(eventRepository, never()).deleteById(validEvent.getId());
+        verify(msTicketClient).checkTicketsByEvent(validEvent.getId());
+    }
 }
