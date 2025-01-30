@@ -1,5 +1,7 @@
 package com.desafio03.ms_event.service;
 
+import com.desafio03.ms_event.clientmstickets.HasTicketResponse;
+import com.desafio03.ms_event.clientmstickets.MsTicketClient;
 import com.desafio03.ms_event.clientviacep.ViacepClient;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
@@ -9,7 +11,9 @@ import com.desafio03.ms_event.repositories.EventRepository;
 import com.desafio03.ms_event.exception.EventNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,11 +24,12 @@ import java.util.List;
 public class EventService {
     private final EventRepository eventRepository;
     private final ViacepClient viacepClient;
+    private final MsTicketClient msTicketClient;
 
     public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
         Event event = EventMapper.toEvent(eventRequestDto);
 
-        if (event.getCep() != null){
+        if (event.getCep() != null) {
             var adress = viacepClient.getAdress(event.getCep());
 
             if (adress != null) {
@@ -41,9 +46,9 @@ public class EventService {
     }
 
     public EventResponseDto getEvent(String id) {
-            return eventRepository.findById(id)
-                    .map(EventMapper::toResponseDto)
-                    .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
+        return eventRepository.findById(id)
+                .map(EventMapper::toResponseDto)
+                .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
     }
 
     public List<EventResponseDto> getAllEvents() {
@@ -78,6 +83,11 @@ public class EventService {
 
     public void deleteEvent(String id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
+
+        HasTicketResponse eventSituation = msTicketClient.checkTicketsByEvent(id);
+        if (eventSituation.hasTickets()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The event can't be deleted because it has tickets.");
+        }
 
         eventRepository.deleteById(event.getId());
         log.info("Event deleted successfully: {}", id);
