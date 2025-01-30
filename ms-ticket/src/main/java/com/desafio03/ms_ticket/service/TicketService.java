@@ -1,13 +1,13 @@
 package com.desafio03.ms_ticket.service;
 
-import com.desafio03.ms_ticket.clientevents.Event;
-import com.desafio03.ms_ticket.clientevents.EventClient;
-import com.desafio03.ms_ticket.clientevents.HasTicketResponseDto;
+import com.desafio03.ms_ticket.feign.msevents.Event;
+import com.desafio03.ms_ticket.feign.msevents.EventClient;
+import com.desafio03.ms_ticket.feign.msevents.HasTicketResponseDto;
 import com.desafio03.ms_ticket.model.Ticket;
-import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
-import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
-import com.desafio03.ms_ticket.model.dto.mapper.TicketMapper;
-import com.desafio03.ms_ticket.repositories.TicketRepository;
+import com.desafio03.ms_ticket.dto.TicketRequestDto;
+import com.desafio03.ms_ticket.dto.TicketResponseDto;
+import com.desafio03.ms_ticket.dto.mapper.TicketMapper;
+import com.desafio03.ms_ticket.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

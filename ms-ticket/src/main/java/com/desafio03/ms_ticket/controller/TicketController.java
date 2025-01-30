@@ -1,8 +1,8 @@
 package com.desafio03.ms_ticket.controller;
 
-import com.desafio03.ms_ticket.clientevents.HasTicketResponseDto;
-import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
-import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
+import com.desafio03.ms_ticket.feign.msevents.HasTicketResponseDto;
+import com.desafio03.ms_ticket.dto.TicketRequestDto;
+import com.desafio03.ms_ticket.dto.TicketResponseDto;
 import com.desafio03.ms_ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

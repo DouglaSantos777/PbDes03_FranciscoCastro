@@ -1,4 +1,4 @@
-package com.desafio03.ms_event.clientviacep;
+package com.desafio03.ms_event.feign.viacep;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

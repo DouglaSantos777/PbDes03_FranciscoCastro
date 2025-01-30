@@ -60,8 +60,9 @@ public class EventController {
                                     schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("get-event/{id}")
-    public ResponseEntity<EventResponseDto> getEvent(@PathVariable String id) {
-        return ResponseEntity.ok(eventService.getEvent(id));
+    @ResponseStatus(HttpStatus.OK)
+    public EventResponseDto getEvent(@PathVariable String id) {
+        return eventService.getEvent(id);
     }
 
     @Operation(summary = "Get all events",

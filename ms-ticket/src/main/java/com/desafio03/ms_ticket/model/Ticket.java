@@ -1,6 +1,6 @@
 package com.desafio03.ms_ticket.model;
 
-import com.desafio03.ms_ticket.clientevents.Event;
+import com.desafio03.ms_ticket.feign.msevents.Event;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;

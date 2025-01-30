@@ -1,10 +1,10 @@
-package com.desafio03.ms_ticket.model.dto.mapper;
+package com.desafio03.ms_ticket.dto.mapper;
 
-import com.desafio03.ms_ticket.clientevents.Event;
-import com.desafio03.ms_ticket.clientevents.EventResponseDto;
+import com.desafio03.ms_ticket.feign.msevents.Event;
+import com.desafio03.ms_ticket.feign.msevents.EventResponseDto;
 import com.desafio03.ms_ticket.model.Ticket;
-import com.desafio03.ms_ticket.model.dto.TicketRequestDto;
-import com.desafio03.ms_ticket.model.dto.TicketResponseDto;
+import com.desafio03.ms_ticket.dto.TicketRequestDto;
+import com.desafio03.ms_ticket.dto.TicketResponseDto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,4 +1,4 @@
-package com.desafio03.ms_ticket.clientevents;
+package com.desafio03.ms_ticket.feign.msevents;
 
 import lombok.Builder;
 

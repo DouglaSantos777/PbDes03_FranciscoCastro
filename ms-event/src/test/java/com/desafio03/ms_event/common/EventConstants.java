@@ -1,6 +1,6 @@
 package com.desafio03.ms_event.common;
 
-import com.desafio03.ms_event.clientviacep.Adress;
+import com.desafio03.ms_event.feign.viacep.Adress;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.model.Event;

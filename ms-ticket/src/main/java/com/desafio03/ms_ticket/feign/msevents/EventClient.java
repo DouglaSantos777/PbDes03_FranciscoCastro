@@ -1,4 +1,4 @@
-package com.desafio03.ms_ticket.clientevents;
+package com.desafio03.ms_ticket.feign.msevents;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.desafio03.ms_ticket.repositories;
+package com.desafio03.ms_ticket.repository;
 
 import com.desafio03.ms_ticket.model.Ticket;
 import org.springframework.data.mongodb.repository.MongoRepository;

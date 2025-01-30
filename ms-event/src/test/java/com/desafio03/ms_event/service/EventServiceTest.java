@@ -1,13 +1,12 @@
-package com.desafio03.ms_event.services;
+package com.desafio03.ms_event.service;
 
-import com.desafio03.ms_event.clientviacep.Adress;
-import com.desafio03.ms_event.clientviacep.ViacepClient;
+import com.desafio03.ms_event.feign.viacep.Adress;
+import com.desafio03.ms_event.feign.viacep.ViacepClient;
 import com.desafio03.ms_event.common.EventConstants;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.model.Event;
-import com.desafio03.ms_event.repositories.EventRepository;
-import com.desafio03.ms_event.service.EventService;
+import com.desafio03.ms_event.repository.EventRepository;
 import com.desafio03.ms_event.exception.EventNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

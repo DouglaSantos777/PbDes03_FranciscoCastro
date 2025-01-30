@@ -1,7 +1,7 @@
 package com.desafio03.ms_ticket.service;
 
-import com.desafio03.ms_ticket.model.util.IdSequence;
-import com.desafio03.ms_ticket.repositories.IdSequenceRepository;
+import com.desafio03.ms_ticket.model.IdSequence;
+import com.desafio03.ms_ticket.repository.IdSequenceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

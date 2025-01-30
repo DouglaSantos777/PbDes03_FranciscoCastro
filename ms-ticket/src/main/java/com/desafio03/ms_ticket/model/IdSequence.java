@@ -1,4 +1,4 @@
-package com.desafio03.ms_ticket.model.util;
+package com.desafio03.ms_ticket.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

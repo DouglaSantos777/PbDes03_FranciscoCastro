@@ -1,6 +1,6 @@
-package com.desafio03.ms_ticket.repositories;
+package com.desafio03.ms_ticket.repository;
 
-import com.desafio03.ms_ticket.model.util.IdSequence;
+import com.desafio03.ms_ticket.model.IdSequence;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface IdSequenceRepository extends MongoRepository<IdSequence, String> {

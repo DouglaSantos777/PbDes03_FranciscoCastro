@@ -1,13 +1,13 @@
 package com.desafio03.ms_event.service;
 
-import com.desafio03.ms_event.clientmstickets.HasTicketResponse;
-import com.desafio03.ms_event.clientmstickets.MsTicketClient;
-import com.desafio03.ms_event.clientviacep.ViacepClient;
+import com.desafio03.ms_event.feign.msticket.HasTicketResponse;
+import com.desafio03.ms_event.feign.msticket.MsTicketClient;
+import com.desafio03.ms_event.feign.viacep.ViacepClient;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.dto.mapper.EventMapper;
 import com.desafio03.ms_event.model.Event;
-import com.desafio03.ms_event.repositories.EventRepository;
+import com.desafio03.ms_event.repository.EventRepository;
 import com.desafio03.ms_event.exception.EventNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
