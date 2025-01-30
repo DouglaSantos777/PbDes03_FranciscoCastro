@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class ApiExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(EventNotFoundException.class)
     public ResponseEntity<ErrorMessage> handleEventNotFoundException(EventNotFoundException e, HttpServletRequest request) {
@@ -31,6 +31,13 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(EventWithTicketsException.class)
     public ResponseEntity<ErrorMessage> handleEventWithTicketException(EventWithTicketsException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ErrorMessage response = new ErrorMessage(status, request, e.getMessage());
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @ExceptionHandler(EventConflictException.class)
+    public ResponseEntity<ErrorMessage> handleEventConflictException(EventConflictException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ErrorMessage response = new ErrorMessage(status, request, e.getMessage());
         return ResponseEntity.status(status).body(response);

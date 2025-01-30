@@ -1,5 +1,6 @@
 package com.desafio03.ms_event.service;
 
+import com.desafio03.ms_event.exception.EventConflictException;
 import com.desafio03.ms_event.feign.msticket.HasTicketResponse;
 import com.desafio03.ms_event.feign.msticket.MsTicketClient;
 import com.desafio03.ms_event.feign.viacep.ViacepClient;
@@ -26,18 +27,10 @@ public class EventService {
     private final MsTicketClient msTicketClient;
 
     public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
+        checkLocalAndDateAvailability(eventRequestDto);
+
         Event event = EventMapper.toEvent(eventRequestDto);
-
-        if (event.getCep() != null) {
-            var adress = viacepClient.getAdress(event.getCep());
-
-            if (adress != null) {
-                event.setLogradouro(adress.logradouro());
-                event.setBairro(adress.bairro());
-                event.setCidade(adress.localidade());
-                event.setUf(adress.uf());
-            }
-        }
+        setEventAddress(event);
 
         eventRepository.save(event);
         log.info("Event created successfully");
@@ -67,6 +60,8 @@ public class EventService {
     }
 
     public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto) {
+        checkLocalAndDateAvailability(eventRequestDto);
+
         Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
 
         event.setEventName(eventRequestDto.eventName());
@@ -90,6 +85,31 @@ public class EventService {
 
         eventRepository.deleteById(event.getId());
         log.info("Event deleted successfully: {}", id);
+    }
+
+    private void checkLocalAndDateAvailability(EventRequestDto eventRequestDto) {
+        boolean isAvailable = eventRepository.findAll().stream()
+                .anyMatch(event -> event.getCep().equalsIgnoreCase(eventRequestDto.cep()) &&
+                        event.getDateTime().equals(eventRequestDto.dateTime()));
+
+        if (isAvailable) {
+            throw new EventConflictException("The location at CEP " + eventRequestDto.cep()
+                    + " is not available on the date "
+                    + eventRequestDto.dateTime());
+        }
+    }
+
+    private void setEventAddress(Event event) {
+        if (event.getCep() != null) {
+            var address = viacepClient.getAdress(event.getCep());
+
+            if (address != null) {
+                event.setLogradouro(address.logradouro());
+                event.setBairro(address.bairro());
+                event.setCidade(address.localidade());
+                event.setUf(address.uf());
+            }
+        }
     }
 
 }
