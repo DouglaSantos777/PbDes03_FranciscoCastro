@@ -24,13 +24,19 @@ public class EventConstants {
     public static final Event INVALID_EVENT = Event.builder()
             .eventName("Invalid Event")
             .dateTime(null)
-            .cep("12345-678")
+            .cep("invalid cep")
             .build();
 
     public static final EventRequestDto VALID_EVENT_REQUEST_DTO = new EventRequestDto(
             "Valid Event",
             TEST_DATE_TIME,
             "01153-000"
+    );
+
+    public static final EventRequestDto INVALID_EVENT_REQUEST_DTO = new EventRequestDto(
+            "InValid EventDto",
+            TEST_DATE_TIME,
+            "invalid cep"
     );
 
     public static final EventResponseDto VALID_EVENT_RESPONSE_DTO = new EventResponseDto(
