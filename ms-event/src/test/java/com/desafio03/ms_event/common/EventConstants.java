@@ -1,6 +1,6 @@
 package com.desafio03.ms_event.common;
 
-import com.desafio03.ms_event.feign.viacep.Adress;
+import com.desafio03.ms_event.feign.viacep.Address;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.model.Event;
@@ -44,7 +44,7 @@ public class EventConstants {
             "SP"
     );
 
-    public static final Adress VALID_ADDRESS = new Adress(
+    public static final Address VALID_ADDRESS = new Address(
             "01153-000",
             "Rua Vitorino Carmilo",
             "Barra Funda",

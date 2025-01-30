@@ -50,7 +50,6 @@ public class EventService {
                 .toList();
     }
 
-
     public List<EventResponseDto> getAllEventsSorted() {
         return eventRepository.findAll()
                 .stream()
@@ -73,7 +72,6 @@ public class EventService {
 
         return EventMapper.toResponseDto(event);
     }
-
 
     public void deleteEvent(String id) {
         Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
@@ -100,16 +98,15 @@ public class EventService {
     }
 
     private void setEventAddress(Event event) {
-        if (event.getCep() != null) {
-            var address = viacepClient.getAdress(event.getCep());
+        var address = viacepClient.getAddress(event.getCep());
 
-            if (address != null) {
-                event.setLogradouro(address.logradouro());
-                event.setBairro(address.bairro());
-                event.setCidade(address.localidade());
-                event.setUf(address.uf());
-            }
+        if (address != null) {
+            event.setLogradouro(address.logradouro());
+            event.setBairro(address.bairro());
+            event.setCidade(address.localidade());
+            event.setUf(address.uf());
         }
     }
-
 }
+
+

@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ViacepClient {
 
     @GetMapping("{cep}/json/")
-    Adress getAdress(@PathVariable String cep);
+    Address getAddress(@PathVariable String cep);
 }
