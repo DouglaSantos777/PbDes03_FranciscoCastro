@@ -19,11 +19,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.desafio03.ms_event.common.EventConstants.TEST_DATE_TIME;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -158,6 +160,105 @@ public class EventServiceTest {
 */
 
     @Test
+    public void getAllEvents_WithEvents_ReturnsAllEvents() {
+        when(eventRepository.findAll()).thenReturn(List.of(validEvent));
+
+        List<EventResponseDto> events = eventService.getAllEvents();
+
+        assertThat(events).isNotNull();
+        assertThat(events.size()).isEqualTo(1);
+        assertThat(events.get(0).eventName()).isEqualTo(validEvent.getEventName());
+
+        verify(eventRepository).findAll();
+    }
+
+    @Test
+    public void getAllEvents_WithNoEvents_ReturnsNoEvents() {
+        when(eventRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<EventResponseDto> events = eventService.getAllEvents();
+
+        assertThat(events).isNotNull();
+        assertThat(events).isEmpty();
+        verify(eventRepository).findAll();
+    }
+
+    /*
+    @Test
+    public void getAllEventsSorted_WithTwoEvents_ReturnsSortedEvents() {
+        Event anotherEvent = Event.builder()
+                .eventName("Another Event")
+                .dateTime(testDateTime.minusDays(1))
+                .cep("01153-001")
+                .build();
+
+        when(eventRepository.findAll()).thenReturn(List.of(validEvent, anotherEvent));
+
+        List<EventResponseDto> events = eventService.getAllEventsSorted();
+
+        assertThat(events).isNotNull();
+        assertThat(events.size()).isEqualTo(2);
+        assertThat(events.get(0).eventName()).isEqualTo("Another Event");
+        assertThat(events.get(1).eventName()).isEqualTo("Valid Event");
+
+        verify(eventRepository).findAll();
+    }
+*/
+    @Test
+    public void getAllEventsSorted_WithNoEvents_ReturnsEmptyList() {
+        when(eventRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<EventResponseDto> events = eventService.getAllEventsSorted();
+
+        assertThat(events).isNotNull();
+        assertThat(events).isEmpty();
+
+        verify(eventRepository).findAll();
+    }
+
+    @Test
+    public void getAllEventsSorted_WithSameNameEvents_ReturnsCorrectlyOrderedEvents() {
+        Event eventWithSameName = Event.builder()
+                .eventName("Valid Event")
+                .dateTime(testDateTime.minusDays(2))
+                .cep("01153-002")
+                .build();
+
+        when(eventRepository.findAll()).thenReturn(List.of(validEvent, eventWithSameName));
+
+        List<EventResponseDto> events = eventService.getAllEventsSorted();
+
+        assertThat(events).isNotNull();
+        assertThat(events.size()).isEqualTo(2);
+        assertThat(events.get(0).eventName()).isEqualTo("Valid Event");
+        assertThat(events.get(1).eventName()).isEqualTo("Valid Event");
+
+        verify(eventRepository).findAll();
+    }
+
+    /*
+    @Test
+    public void getAllEventsSorted_WithEventsInDescendingOrder_ReturnsSortedEvents() {
+        Event descendingEvent = Event.builder()
+                .eventName("Zulu Event")
+                .dateTime(testDateTime.minusDays(3))
+                .cep("01153-003")
+                .build();
+
+        when(eventRepository.findAll()).thenReturn(List.of(descendingEvent, validEvent));
+
+        List<EventResponseDto> events = eventService.getAllEventsSorted();
+
+        assertThat(events).isNotNull();
+        assertThat(events.size()).isEqualTo(2);
+        assertThat(events.get(0).eventName()).isEqualTo("Valid Event");
+        assertThat(events.get(1).eventName()).isEqualTo("Zulu Event");
+
+        verify(eventRepository).findAll();
+    }
+    */
+
+    @Test
     public void updateEvent_WithValidData_ReturnsUpdatedEvent() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.ofNullable(validEvent));
         when(eventRepository.save(validEvent)).thenReturn(validEvent);
@@ -173,8 +274,8 @@ public class EventServiceTest {
     }
 
     @Test
-    public void updateEvent_WhenEventNotFound_ThrowsEntityNotFoundException() {
-        when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.empty());
+    public void updateEvent_WhenEventNotFound_ThrowsEventNotFoundException() {
+        when(eventRepository.findById(validEvent.getId())).thenReturn(Optional.empty());
 
         EventRequestDto updateRequest = new EventRequestDto("Updated Event", testDateTime, "01153-000");
 
