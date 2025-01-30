@@ -3,7 +3,7 @@ package com.desafio03.ms_event.controller;
 import com.desafio03.ms_event.dto.EventRequestDto;
 import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.service.EventService;
-import exception.ErrorMessage;
+import com.desafio03.ms_event.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

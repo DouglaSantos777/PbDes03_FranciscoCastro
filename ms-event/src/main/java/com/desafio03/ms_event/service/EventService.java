@@ -6,7 +6,7 @@ import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.dto.mapper.EventMapper;
 import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.repositories.EventRepository;
-import exception.EntityNotFoundException;
+import com.desafio03.ms_event.exception.EventNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class EventService {
     public EventResponseDto getEvent(String id) {
             return eventRepository.findById(id)
                     .map(EventMapper::toResponseDto)
-                    .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
+                    .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
     }
 
     public List<EventResponseDto> getAllEvents() {
@@ -63,7 +63,7 @@ public class EventService {
     }
 
     public EventResponseDto updateEvent(String id, EventRequestDto eventRequestDto) {
-        Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
 
         event.setEventName(eventRequestDto.eventName());
         event.setDateTime(eventRequestDto.dateTime());
@@ -77,7 +77,7 @@ public class EventService {
 
 
     public void deleteEvent(String id) {
-        Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + id));
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + id));
 
         eventRepository.deleteById(event.getId());
         log.info("Event deleted successfully: {}", id);

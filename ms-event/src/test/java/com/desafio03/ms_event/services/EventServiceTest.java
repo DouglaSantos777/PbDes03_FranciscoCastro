@@ -8,7 +8,7 @@ import com.desafio03.ms_event.dto.EventResponseDto;
 import com.desafio03.ms_event.model.Event;
 import com.desafio03.ms_event.repositories.EventRepository;
 import com.desafio03.ms_event.service.EventService;
-import exception.EntityNotFoundException;
+import com.desafio03.ms_event.exception.EventNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -107,7 +107,7 @@ public class EventServiceTest {
         EventRequestDto updateRequest = new EventRequestDto("Updated Event", TEST_DATE_TIME, "01153-000");
 
         assertThatThrownBy(() -> eventService.updateEvent(validEvent.getId(), updateRequest))
-                .isInstanceOf(EntityNotFoundException.class)
+                .isInstanceOf(EventNotFoundException.class)
                 .hasMessage("Event not found with ID: " + validEvent.getId());
 
         verify(eventRepository).findById(validEvent.getId());
@@ -128,7 +128,7 @@ public class EventServiceTest {
         when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.empty());
 
         assertThatThrownBy(() -> eventService.deleteEvent(validEvent.getId()))
-                .isInstanceOf(EntityNotFoundException.class)
+                .isInstanceOf(EventNotFoundException.class)
                 .hasMessage("Event not found with ID: " + validEvent.getId());
 
         verify(eventRepository).findById(validEvent.getId());

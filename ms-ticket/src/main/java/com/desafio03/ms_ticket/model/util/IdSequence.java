@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "id_sequence")
+@Document(collection = "id_sequences")
 @Getter
 @Setter
 @AllArgsConstructor
