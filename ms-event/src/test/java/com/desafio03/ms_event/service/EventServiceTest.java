@@ -1,5 +1,7 @@
 package com.desafio03.ms_event.service;
 
+import com.desafio03.ms_event.feign.msticket.HasTicketResponse;
+import com.desafio03.ms_event.feign.msticket.MsTicketClient;
 import com.desafio03.ms_event.feign.viacep.Adress;
 import com.desafio03.ms_event.feign.viacep.ViacepClient;
 import com.desafio03.ms_event.common.EventConstants;
@@ -18,8 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static com.desafio03.ms_event.common.EventConstants.TEST_DATE_TIME;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,6 +34,9 @@ public class EventServiceTest {
 
     @Mock
     private ViacepClient viacepClient;
+
+    @Mock
+    private MsTicketClient msTicketClient;
 
     private Event validEvent;
 
@@ -51,7 +55,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void createEvent_WithValidData_ReturnsCreatedEventWithStatus201() {
+    public void createEvent_WithValidData_ReturnsCreatedEvent() {
         when(eventRepository.save(validEvent)).thenReturn(validEvent);
 
         when(viacepClient.getAdress(validEvent.getCep())).thenReturn(mockAddress);
@@ -114,16 +118,18 @@ public class EventServiceTest {
     }
 
     @Test
-    public void deleteEvent_WhenEventExists_DeletesEvent() {
+    public void deleteEvent_WhenEventExistsAndHasNoTickets_doesNotThrowAnyException() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.of(validEvent));
+        when(msTicketClient.checkTicketsByEvent(validEvent.getId())).thenReturn(new HasTicketResponse(validEvent.getId(), false));
 
         eventService.deleteEvent(validEvent.getId());
 
         verify(eventRepository).deleteById(validEvent.getId());
+        assertThatCode(() -> eventService.deleteEvent(validEvent.getId())).doesNotThrowAnyException();
     }
 
     @Test
-    public void deleteEvent_WhenEventNotFound_ThrowsEntityNotFoundException() {
+    public void deleteEvent_WhenEventNotFound_ThrowsEventNotFoundException() {
         when(eventRepository.findById(validEvent.getId())).thenReturn(java.util.Optional.empty());
 
         assertThatThrownBy(() -> eventService.deleteEvent(validEvent.getId()))
