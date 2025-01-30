@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class EventController {
             })
     @PostMapping("create-event")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventResponseDto createEvent(@RequestBody EventRequestDto eventRequestDto) {
+    public EventResponseDto createEvent(@Valid @RequestBody EventRequestDto eventRequestDto) {
 
         return eventService.createEvent(eventRequestDto);
     }
@@ -107,7 +108,7 @@ public class EventController {
             })
     @PutMapping("update-event/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EventResponseDto updateEvent(@PathVariable String id, @RequestBody EventRequestDto eventRequestDto) {
+    public EventResponseDto updateEvent(@PathVariable String id, @Valid @RequestBody EventRequestDto eventRequestDto) {
         return eventService.updateEvent(id, eventRequestDto);
     }
 

@@ -4,6 +4,7 @@ import com.desafio03.ms_ticket.feign.msevents.HasTicketResponseDto;
 import com.desafio03.ms_ticket.dto.TicketRequestDto;
 import com.desafio03.ms_ticket.dto.TicketResponseDto;
 import com.desafio03.ms_ticket.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class TicketController {
 
     @PostMapping("create-ticket")
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketResponseDto createTicket(@RequestBody TicketRequestDto dto) {
+    public TicketResponseDto createTicket(@Valid @RequestBody TicketRequestDto dto) {
         return ticketService.createTicket(dto);
     }
 
@@ -41,7 +42,7 @@ public class TicketController {
 
     @PutMapping("update-ticket/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TicketResponseDto updateTicket(@PathVariable String id, @RequestBody TicketRequestDto dto) {
+    public TicketResponseDto updateTicket(@PathVariable String id, @Valid @RequestBody TicketRequestDto dto) {
         return ticketService.updateTicket(id, dto);
     }
 
