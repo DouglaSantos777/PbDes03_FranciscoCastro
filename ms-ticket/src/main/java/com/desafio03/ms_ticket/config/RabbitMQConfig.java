@@ -1,4 +1,3 @@
-/*
 package com.desafio03.ms_ticket.config;
 
 import org.springframework.amqp.core.Queue;
@@ -9,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.template.default-receive-queue}")
+    @Value("${broker.queue.email.name}")
     private String queue;
 
     @Bean
@@ -17,4 +16,3 @@ public class RabbitMQConfig {
         return new Queue(queue, true);
     }
 }
-*/

@@ -10,8 +10,10 @@ spring:
     mongodb:
       uri: mongodb+srv://admin:admin@cluster0.wokh8.mongodb.net/db_ticket?retryWrites=true&w=majority&appName=Cluster0
   rabbitmq:
-    addresses: amqps://fdtzmxab:HpB8YDUN-OHTAIj6ygsb9BbkA1a7fbgy@jaragua.lmq.cloudamqp.com/fdtzmxab
-    template:
-      default-receive-queue: default.email
+    addresses: amqps://cxcgepkp:seSpZhMmFsuG7rXgcdr_633eXXw3xoqZ@beaver.rmq.cloudamqp.com/cxcgepkp
+broker:
+  queue:
+    email:
+      name: default.email
 server:
   port: 8081
