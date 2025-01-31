@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public record TicketRequestDto(
         @NotBlank(message = "Customer Name cannot be blank. Please provide the customer name.")
-        @Size(min = 10, max = 100, message = "Customer Name must be between 3 and 100 characters.")
+        @Size(min = 5, max = 100, message = "Customer Name must be between 3 and 100 characters.")
         String customerName,
 
         @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format XXX.XXX.XXX-XX")
@@ -23,12 +23,10 @@ public record TicketRequestDto(
         @Size(min = 3, max = 100, message = "Event Name must be between 3 and 100 characters.")
         String eventName,
 
-        @DecimalMin(value = "0.0", message = "Amount in BRL must be zero or positive. Please enter a valid amount.")
-        @Digits(integer = 10, fraction = 2, message = "Amount in BRL must have up to 2 decimal places.")
+        @Pattern(regexp = "R\\$\\s?\\d{1,10}(,\\d{1,2})?", message = "BRLamount must be a valid amount (e.g., R$ 60,60).")
         String BRLamount,
 
-        @DecimalMin(value = "0.0", message = "Amount in USD must be zero or positive. Please enter a valid amount.")
-        @Digits(integer = 10, fraction = 2, message = "Amount in USD must have up to 2 decimal places.")
+        @Pattern(regexp = "\\$\\s?\\d{1,10}(,\\d{1,2})?", message = "USDamount must be a valid amount (e.g., $ 10,10).")
         String USDamount
 ){
 }

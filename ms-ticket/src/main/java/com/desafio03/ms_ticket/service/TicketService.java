@@ -1,12 +1,13 @@
 package com.desafio03.ms_ticket.service;
 
+import com.desafio03.ms_ticket.dto.TicketRequestDto;
+import com.desafio03.ms_ticket.dto.TicketResponseDto;
+import com.desafio03.ms_ticket.dto.mapper.TicketMapper;
 import com.desafio03.ms_ticket.feign.msevents.Event;
 import com.desafio03.ms_ticket.feign.msevents.EventClient;
 import com.desafio03.ms_ticket.feign.msevents.HasTicketResponseDto;
 import com.desafio03.ms_ticket.model.Ticket;
-import com.desafio03.ms_ticket.dto.TicketRequestDto;
-import com.desafio03.ms_ticket.dto.TicketResponseDto;
-import com.desafio03.ms_ticket.dto.mapper.TicketMapper;
+import com.desafio03.ms_ticket.producer.TicketProducer;
 import com.desafio03.ms_ticket.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final EventClient eventClient;
     private final IdSequenceService idSequenceService;
+    private final TicketProducer ticketProducer;
 
     public TicketResponseDto createTicket(TicketRequestDto dto) {
         Event event = null;
@@ -39,10 +41,11 @@ public class TicketService {
         }
 
         Ticket ticket = TicketMapper.toTicket(dto, event);
-
         ticket.setTicketId(String.valueOf(idSequenceService.getNextId()));
-
         ticketRepository.save(ticket);
+
+        ticketProducer.publishEmail(ticket);
+        log.info("Email has sent.");
 
         return TicketMapper.toResponseDto(ticket);
     }
