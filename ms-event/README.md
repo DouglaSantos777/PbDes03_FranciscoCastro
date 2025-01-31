@@ -13,9 +13,10 @@ JUnit (Testes unitários)
 
 | Operação   | Método | Path                        | Regra                                               |
 |------------|--------|-----------------------------|-----------------------------------------------------|
-| Criar      | POST   | `/create-event`             | Cria um evento                                     |
+| Criar      | POST   | `/create-event`             | Cria um evento, buscando o endereço completo a partir do CEP usando o ViaCEP. Se o campo `cep` for fornecido, o serviço buscará o endereço correspondente automaticamente. |
 | Consultar  | GET    | `/get-event/{id}`           | Busca um evento pelo ID                            |
 | Consultar  | GET    | `/get-all-events`           | Lista todos os eventos                             |
 | Consultar  | GET    | `/get-all-events/sorted`    | Lista eventos em ordem alfabética                   |
 | Atualizar  | PUT    | `/update-event/{id}`        | Atualiza um evento pelo ID                         |
 | Excluir    | DELETE | `/delete-event/{id}`        | Exclui um evento pelo ID (exclusão permitida apenas se não houver ingressos vendidos) |
+ 
