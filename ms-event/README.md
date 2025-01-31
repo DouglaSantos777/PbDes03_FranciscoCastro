@@ -20,4 +20,9 @@ Esse microsserviço é respnsável pela criação, consulta, atualização, list
 | Atualizar  | PUT    | `/update-event/{id}`        | Atualiza um evento pelo ID                         |
 | Excluir    | DELETE | `/delete-event/{id}`        | Exclui um evento pelo ID (exclusão permitida apenas se não houver ingressos vendidos) |
 
+## Cobertura de Testes com Jacoco
+
+![Captura de tela de 2025-01-31 14-20-40](https://github.com/user-attachments/assets/28606c7b-ff7b-467f-8e61-83819ca4d4cb)
+
+
 
