@@ -16,6 +16,7 @@ Esse microsserviço é responsável pela criação, consulta, cancelamento e ver
 | Criar      | POST   | `/create-ticket`                | Cria um ingresso para um evento existente, validando a existência do evento no ms-event-manager e enviando confirmação por e-mail via RabbitMQ. |
 | Consultar  | GET    | `/get-ticket/{id}`              | Busca um ingresso pelo ID                                   |
 | Consultar  | GET    | `/get-ticket-by-cpf/{cpf}`      | Busca ingressos pelo CPF                                    |
+| Atualizar  | PUT    | `/update-ticket/{id}`           | Atualiza Tickets pelo id                                    |
 | Cancelar   | DELETE | `/cancel-ticket/{id}`           | Cancela um ingresso pelo ID (soft-delete)                   |
 | Cancelar   | DELETE | `/cancel-ticket/{cpf}`          | Cancela ingressos pelo CPF (soft-delete)                    |
 | Consultar  | GET    | `/check-tickets-by-event/{eventId}` | Verifica ingressos vinculados a um evento                   |
