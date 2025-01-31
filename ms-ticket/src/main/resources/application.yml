@@ -26,5 +26,9 @@ broker:
   queue:
     email:
       name: default.email
+      
+eventurl:
+  url: ${MSEVENT_URL:http://ms-event:8080}/api/v1/event/get-event
+  
 server:
   port: 8081

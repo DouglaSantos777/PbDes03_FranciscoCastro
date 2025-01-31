@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "ms-event", url = "http://localhost:8080/api/v1/events")
+@FeignClient(name = "ms-event", url = "${eventurl.url}")
 public interface EventClient {
 
     @GetMapping("/get-event/{id}")
