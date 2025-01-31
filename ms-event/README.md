@@ -1,8 +1,21 @@
-# Desafio 03 - PB Compass
+# Microsserviço de Gerenciamento de Eventos (ms-event-manager)
 
-Este projeto envolve a criação de dois microsserviços para gerenciamento de eventos e ingressos. O primeiro microsserviço (ms-event-manager) lida com a criação, consulta, atualização e exclusão de eventos. O segundo microsserviço (ms-ticket-manager) é responsável pela criação e gestão de ingressos, além de integração com o ms-event-manager para validar eventos.
+Esse microsserviço é respnsável pela criação, consulta, atualização, listagem e exclusão de eventos. Ele interage com o microsserviço de tickets para validar se os ingressos vendidos estão associados a eventos existentes. O serviço também gerencia o status de eventos e permite a exclusão apenas se não houver ingressos vendidos.
 
-## Microsserviços
-- [ms-event/](./ms-event/)
-- [ms-ticket/](./ms-ticket/)
+## Ferramentas
+Java 17 (LTS)
+Spring Boot 3.3.7 (LTS)
+MongoDB Atlas
+Swagger (para documentação da API)
+JUnit (Testes unitários)
 
+## Operações do Ms-Events
+
+| Operação   | Método | Path                        | Regra                                               |
+|------------|--------|-----------------------------|-----------------------------------------------------|
+| Criar      | POST   | `/create-event`             | Cria um evento                                     |
+| Consultar  | GET    | `/get-event/{id}`           | Busca um evento pelo ID                            |
+| Consultar  | GET    | `/get-all-events`           | Lista todos os eventos                             |
+| Consultar  | GET    | `/get-all-events/sorted`    | Lista eventos em ordem alfabética                   |
+| Atualizar  | PUT    | `/update-event/{id}`        | Atualiza um evento pelo ID                         |
+| Excluir    | DELETE | `/delete-event/{id}`        | Exclui um evento pelo ID (exclusão permitida apenas se não houver ingressos vendidos) |
