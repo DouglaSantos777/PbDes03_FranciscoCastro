@@ -1,8 +1,21 @@
-# Desafio 03 - PB Compass
+# Microsserviço de Gerenciamento de Ingressos (ms-ticket-manager)
 
-Este projeto envolve a criação de dois microsserviços para gerenciamento de eventos e ingressos. O primeiro microsserviço (ms-event-manager) lida com a criação, consulta, atualização e exclusão de eventos. O segundo microsserviço (ms-ticket-manager) é responsável pela criação e gestão de ingressos, além de integração com o ms-event-manager para validar eventos.
+Esse microsserviço é responsável pela criação, consulta, cancelamento e verificação de ingressos. Ele interage com o microsserviço de eventos para garantir que os ingressos estejam associados a eventos válidos. O serviço também permite o cancelamento de ingressos, com a opção de realizar soft delete, e realiza a validação de dados antes de criar ingressos.
 
-## Microsserviços
-- [ms-event/](./ms-event/)
-- [ms-ticket/](./ms-ticket/)
+## Ferramentas
+- Java 17 (LTS)
+- Spring Boot 3.3.7 (LTS)
+- MongoDB Atlas
+- RabbitMQ (para envio de e-mails de confirmação)
+- Swagger (para documentação da API)
 
+## Operações do Ms-Ticket-Manager
+
+| Operação   | Método | Path                            | Regra                                                      |
+|------------|--------|---------------------------------|------------------------------------------------------------|
+| Criar      | POST   | `/create-ticket`                | Cria um ingresso para um evento existente, validando a existência do evento no ms-event-manager e enviando confirmação por e-mail via RabbitMQ. |
+| Consultar  | GET    | `/get-ticket/{id}`              | Busca um ingresso pelo ID                                   |
+| Consultar  | GET    | `/get-ticket-by-cpf/{cpf}`      | Busca ingressos pelo CPF                                    |
+| Cancelar   | DELETE | `/cancel-ticket/{id}`           | Cancela um ingresso pelo ID (soft-delete)                   |
+| Cancelar   | DELETE | `/cancel-ticket/{cpf}`          | Cancela ingressos pelo CPF (soft-delete)                    |
+| Consultar  | GET    | `/check-tickets-by-event/{eventId}` | Verifica ingressos vinculados a um evento                   |
