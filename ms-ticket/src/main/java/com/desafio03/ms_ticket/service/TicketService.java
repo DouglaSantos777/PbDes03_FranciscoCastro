@@ -21,7 +21,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final EventClient eventClient;
     private final IdSequenceService idSequenceService;
-    private final TicketProducer ticketProducer;
+    final TicketProducer ticketProducer;
 
     public TicketResponseDto createTicket(TicketRequestDto dto) {
         Event event = null;

@@ -11,6 +11,17 @@ spring:
       uri: mongodb+srv://admin:admin@cluster0.wokh8.mongodb.net/db_ticket?retryWrites=true&w=majority&appName=Cluster0
   rabbitmq:
     addresses: amqps://cxcgepkp:seSpZhMmFsuG7rXgcdr_633eXXw3xoqZ@beaver.rmq.cloudamqp.com/cxcgepkp
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: msender204@gmail.com
+    password: ssog qcnr xnph vxxs
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 broker:
   queue:
     email:

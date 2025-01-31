@@ -23,12 +23,14 @@ public class TicketProducer {
                 ticket.getTicketId(),
                 ticket.getCustomerMail(),
                 "Confirmação de Compra",
-                "Seu ingresso para o evento " + ticket.getEvent().eventName()
-                        + " foi comprado com sucesso! Detalhes do ingresso: "
+                "Sua compra do ingress para o evento " + ticket.getEvent().eventName()
+                        + " foi realizada com sucesso! Te espero lá! \nInformações do ingresso: "
                         + ticket.toString()
         );
 
+        log.info("Enviando mensagem para a fila {}: {}", routingKey, emailDto);
         rabbitTemplate.convertAndSend(routingKey, emailDto);
-        log.info("Mensagem enviada para a fila {}: {}", routingKey, emailDto);
+        log.info("Mensagem enviada com sucesso.");
+
     }
 }
