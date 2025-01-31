@@ -1,6 +1,6 @@
 package com.desafio03.ms_ticket.model;
 
-import com.desafio03.ms_ticket.status.EmailStatus;
+import com.desafio03.ms_ticket.enums.EmailStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

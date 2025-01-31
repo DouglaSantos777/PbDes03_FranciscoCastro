@@ -2,7 +2,7 @@ package com.desafio03.ms_ticket.service;
 
 import com.desafio03.ms_ticket.model.Email;
 import com.desafio03.ms_ticket.repository.EmailRepository;
-import com.desafio03.ms_ticket.status.EmailStatus;
+import com.desafio03.ms_ticket.enums.EmailStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

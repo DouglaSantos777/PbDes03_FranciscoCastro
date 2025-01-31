@@ -18,14 +18,11 @@ public class EmailConsumer {
     final EmailService emailService;
 
     @RabbitListener(queues = "${broker.queue.email.name}")
-    public void listenEmail(@Payload EmailDto emailDto) {
-        log.info("Mensagem recebida na fila: {}", emailDto);
+    public void listenEmail(@Payload EmailDto emailDto) throws InterruptedException {
 
         var email = new Email();
         BeanUtils.copyProperties(emailDto, email);
 
-        log.info("Chamando serviço de envio de e-mail para: {}", email.getEmailTo());
         emailService.sendEmail(email);
-        log.info("E-mail processado com sucesso.");
     }
 }

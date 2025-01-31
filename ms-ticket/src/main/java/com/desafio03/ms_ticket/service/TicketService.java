@@ -29,7 +29,7 @@ public class TicketService {
         try {
             event = eventClient.getEventById(dto.eventId());
         } catch (Exception e) {
-            log.info("Event not found with id: {}", dto.eventId());
+            log.warn("Event not found with id: {}", dto.eventId());
         }
 
         if (event == null) {
@@ -45,7 +45,6 @@ public class TicketService {
         ticketRepository.save(ticket);
 
         ticketProducer.publishEmail(ticket);
-        log.info("Email has sent.");
 
         return TicketMapper.toResponseDto(ticket);
     }
@@ -70,7 +69,6 @@ public class TicketService {
         if (dto.customerMail() != null) ticket.setCustomerMail(dto.customerMail());
 
         ticketRepository.save(ticket);
-        log.info("Ticket updated successfully: {}", id);
 
         return TicketMapper.toResponseDto(ticket);
     }
@@ -81,7 +79,6 @@ public class TicketService {
         ticket.setStatus("cancelado");
 
         ticketRepository.save(ticket);
-        log.info("Ticket canceled successfully: {}", id);
         return TicketMapper.toResponseDto(ticket);
     }
 
@@ -91,7 +88,6 @@ public class TicketService {
         ticket.setStatus("cancelado");
 
         ticketRepository.save(ticket);
-        log.info("Ticket canceled by cpf successfully: {}", cpf);
         return TicketMapper.toResponseDto(ticket);
     }
 
