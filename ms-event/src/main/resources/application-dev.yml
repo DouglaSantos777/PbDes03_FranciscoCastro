@@ -1,7 +1,6 @@
 spring:
-  #tirar isso de profiles active depois
-  profiles:
-    active: dev
+  config:
+    import: optional:file:.env.dev[.properties]
   application:
     name: ${SPRING_APPLICATION_NAME}
   data:
