@@ -58,7 +58,7 @@ build/
 
 # Arquivos de ambiente
 .env
-.env.dev
+.env-dev
 
 # Arquivos específicos do sistema operacional
 .DS_Store
