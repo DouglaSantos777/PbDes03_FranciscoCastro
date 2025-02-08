@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public record TicketRequestDto(
         @NotBlank(message = "Customer Name cannot be blank. Please provide the customer name.")
-        @Size(min = 5, max = 100, message = "Customer Name must be between 3 and 100 characters.")
+        @Size(min = 3, max = 100, message = "Customer Name must be between 3 and 100 characters.")
         String customerName,
 
         @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format XXX.XXX.XXX-XX")

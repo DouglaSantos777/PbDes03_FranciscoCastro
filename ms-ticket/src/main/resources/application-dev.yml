@@ -1,11 +1,6 @@
 spring:
   config:
     import: optional:file:.env-dev[.properties]
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
   application:
     name: ms-ticket
   data:

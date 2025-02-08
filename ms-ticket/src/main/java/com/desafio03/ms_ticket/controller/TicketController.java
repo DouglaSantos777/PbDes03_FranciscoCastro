@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/tickets")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class TicketController {
 
     @GetMapping("get-ticket-by-cpf/{cpf}")
     @ResponseStatus(HttpStatus.OK)
-    public TicketResponseDto getTicketByCpf(@PathVariable String cpf) {
+    public List<TicketResponseDto> getTicketByCpf(@PathVariable String cpf) {
         return ticketService.getTicketByCpf(cpf);
     }
 
@@ -54,7 +56,7 @@ public class TicketController {
 
     @DeleteMapping("cancel-ticket-by-cpf/{cpf}")
     @ResponseStatus(HttpStatus.OK)
-    public TicketResponseDto cancelTicketByCpf(@PathVariable String cpf) {
+    public List<TicketResponseDto> cancelTicketByCpf(@PathVariable String cpf) {
         return ticketService.cancelTicketByCpf(cpf);
     }
 }
