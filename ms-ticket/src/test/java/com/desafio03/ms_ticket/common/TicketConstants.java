@@ -1,0 +1,68 @@
+package com.desafio03.ms_ticket.common;
+
+import com.desafio03.ms_ticket.dto.TicketRequestDto;
+import com.desafio03.ms_ticket.dto.TicketResponseDto;
+import com.desafio03.ms_ticket.feign.msevents.Event;
+import com.desafio03.ms_ticket.feign.msevents.EventResponseDto;
+import com.desafio03.ms_ticket.model.Ticket;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class TicketConstants {
+
+    public static final LocalDateTime TEST_DATE_TIME = LocalDateTime.of(2026, 1, 30, 10, 30);
+
+    public static final Event VALID_EVENT = new Event(
+            "100",
+            "Valid Event",
+            TEST_DATE_TIME,
+            "01153-000",
+            "Rua Vitorino Carmilo",
+            "Barra Funda",
+            "São Paulo",
+            "SP"
+    );
+
+    public static final EventResponseDto VALID_EVENT_RESPONSE_DTO = EventResponseDto.builder()
+            .eventId("100")
+            .eventName("Valid Event")
+            .eventDateTime(TEST_DATE_TIME)
+            .logradouro("Rua Vitorino Carmilo")
+            .bairro("Barra Funda")
+            .cidade("São Paulo")
+            .uf("SP")
+            .build();
+
+    public static final Ticket VALID_TICKET = Ticket.builder()
+            .ticketId("1")
+            .customerName("John Doe")
+            .cpf("123.456.789-00")
+            .customerMail("johndoe@example.com")
+            .event(VALID_EVENT)
+            .BRLtotalAmount(new BigDecimal("150.50"))
+            .USDtotalAmount(new BigDecimal("30.10"))
+            .status("ativo")
+            .build();
+
+    public static final TicketRequestDto VALID_TICKET_REQUEST_DTO = new TicketRequestDto(
+            "John Doe",
+            "123.456.789-00",
+            "johndoe@example.com",
+            "100",
+            "Valid Event",
+            "R$ 150,50",
+            "$ 30,10"
+    );
+
+    public static final TicketResponseDto VALID_TICKET_RESPONSE_DTO = new TicketResponseDto(
+            "1",
+            "123.456.789-00",
+            "John Doe",
+            "johndoe@example.com",
+            VALID_EVENT_RESPONSE_DTO,
+            "R$ 150,50",
+            "$ 30,10",
+            "ativo"
+    );
+}
