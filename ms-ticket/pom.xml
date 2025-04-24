@@ -121,6 +121,7 @@
                     <excludes>
                         <exclude>com/desafio03/ms_ticket/MsTicketApplication.class</exclude>
                         <exclude>com/desafio03/ms_ticket/config/**</exclude>
+                        <exclude>com/desafio03/ms_ticket/enums/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>

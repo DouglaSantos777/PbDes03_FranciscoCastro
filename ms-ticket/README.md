@@ -20,3 +20,4 @@ Esse microsserviço é responsável pela criação, consulta, cancelamento e ver
 | Cancelar   | DELETE | `/cancel-ticket/{id}`           | Cancela um ingresso pelo ID (soft-delete)                   |
 | Cancelar   | DELETE | `/cancel-ticket/{cpf}`          | Cancela ingressos pelo CPF (soft-delete)                    |
 | Consultar  | GET    | `/check-tickets-by-event/{eventId}` | Verifica ingressos vinculados a um evento                   |
+

@@ -24,6 +24,6 @@ broker:
     email:
       name: default.email
 eventurl:
-  url: ${MSEVENT_URL:http://localhost:8080}/api/v1/events/
+  url: ${MSEVENT_URL:http://localhost:8082}/api/v1/events/
 server:
-  port: 8081
+  port: 8083

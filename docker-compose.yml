@@ -19,7 +19,7 @@ services:
     container_name: ms-ticket
     restart: always
     ports:
-      - 8081:8081 
+      - 8081:8081
     environment:
       - MSEVENT_URL=http://ms-event:8080
     networks:

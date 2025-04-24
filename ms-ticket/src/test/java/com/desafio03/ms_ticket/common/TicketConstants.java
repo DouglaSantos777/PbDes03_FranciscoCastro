@@ -14,7 +14,7 @@ public class TicketConstants {
     public static final LocalDateTime TEST_DATE_TIME = LocalDateTime.of(2026, 1, 30, 10, 30);
 
     public static final Event VALID_EVENT = new Event(
-            "100",
+            "abcdefghijk",
             "Valid Event",
             TEST_DATE_TIME,
             "01153-000",
@@ -25,7 +25,7 @@ public class TicketConstants {
     );
 
     public static final EventResponseDto VALID_EVENT_RESPONSE_DTO = EventResponseDto.builder()
-            .eventId("100")
+            .eventId("abcdefghijk")
             .eventName("Valid Event")
             .eventDateTime(TEST_DATE_TIME)
             .logradouro("Rua Vitorino Carmilo")
@@ -36,20 +36,30 @@ public class TicketConstants {
 
     public static final Ticket VALID_TICKET = Ticket.builder()
             .ticketId("1")
-            .customerName("John Doe")
+            .customerName("Valid User")
             .cpf("123.456.789-00")
-            .customerMail("johndoe@example.com")
+            .customerMail("validmail@gmail.com")
             .event(VALID_EVENT)
             .BRLtotalAmount(new BigDecimal("150.50"))
             .USDtotalAmount(new BigDecimal("30.10"))
-            .status("ativo")
+            .status("concluído")
             .build();
 
     public static final TicketRequestDto VALID_TICKET_REQUEST_DTO = new TicketRequestDto(
-            "John Doe",
+            "Valid User",
             "123.456.789-00",
-            "johndoe@example.com",
-            "100",
+            "validmail@gmail.com",
+            "abcdefghijk",
+            "Valid Event",
+            "R$ 150,50",
+            "$ 30,10"
+    );
+
+    public static final TicketRequestDto INVALID_TICKET_REQUEST_DTO = new TicketRequestDto(
+            "Invalid User",
+            "123.456.789",
+            "validmail@gmail.com",
+            "abcdefghijk",
             "Valid Event",
             "R$ 150,50",
             "$ 30,10"
@@ -58,11 +68,12 @@ public class TicketConstants {
     public static final TicketResponseDto VALID_TICKET_RESPONSE_DTO = new TicketResponseDto(
             "1",
             "123.456.789-00",
-            "John Doe",
-            "johndoe@example.com",
+            "Valid User",
+            "validmail@gmail.com",
             VALID_EVENT_RESPONSE_DTO,
             "R$ 150,50",
             "$ 30,10",
-            "ativo"
+            "concluído"
     );
+
 }

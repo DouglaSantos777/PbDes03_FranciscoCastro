@@ -16,7 +16,7 @@ public record TicketRequestDto(
         String customerMail,
 
         @NotBlank(message = "Event ID cannot be empty. Please provide the event ID.")
-        @Size(min = 10, max = 100, message = "Event ID must be between 5 and 20 characters.")
+        @Size(min = 10, max = 100, message = "Event ID must be between 10 and 100 characters.")
         String eventId,
 
         @NotBlank(message = "Event Name cannot be blank. Please provide the event name.")

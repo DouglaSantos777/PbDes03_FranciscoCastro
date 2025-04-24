@@ -61,7 +61,7 @@ class TicketRepositoryTest {
     public void existsByEventId_WithExistingEventId_ReturnsTrue() {
         ticketRepository.save(VALID_TICKET);
 
-        boolean exists = ticketRepository.existsByEventId("100");
+        boolean exists = ticketRepository.existsByEventId("abcdefghijk");
 
         assertThat(exists).isTrue();
     }
